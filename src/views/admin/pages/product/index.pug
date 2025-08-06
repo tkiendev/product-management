@@ -1,0 +1,42 @@
+extends ../../layouts/default.pug
+
+block main  
+    h1 Danh sách sản Phẩm 
+
+    table.table.table-hover.table-sm
+        thead
+            tr
+                th STT
+                th Hình ảnh
+                th Tên sản Phẩm 
+                th Giá 
+                th Giảm (%)
+                th Số lượng 
+                th Trạng thái
+                th Hoạt động
+            tbody
+                each item, index  in product
+                    if(item)
+                        tr
+                            td #{index + 1}
+                            td 
+                                img(
+                                    src=`${item.thumbnail}`
+                                    alt=`${item.title}`
+                                    width=`100px`
+                                    height=`auto`
+                                )
+                            td #{item.title}
+                            td #{item.stringPrice}đ
+                            td #{item.discountPercentage}%
+                            td #{item.stock}
+                            td 
+                                if (item.status === 'active')
+                                    a(href="#" class = `badge badge-success`) Hoạt Động
+                                else 
+                                    a(href="#" class = `badge badge-danger`) Dừng hoạt Động
+                            td 
+                                button(class = `btn btn-warning btn-sm`) Sửa
+                                button(class = `btn btn-danger btn-sm ml-1`) Xóa
+                    else 
+                        span Không có sản phẩm nào
