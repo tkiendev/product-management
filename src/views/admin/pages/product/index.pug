@@ -1,42 +1,60 @@
 extends ../../layouts/default.pug
 
-block main  
-    h1 Danh sách sản Phẩm 
+block main    
 
-    table.table.table-hover.table-sm
-        thead
-            tr
-                th STT
-                th Hình ảnh
-                th Tên sản Phẩm 
-                th Giá 
-                th Giảm (%)
-                th Số lượng 
-                th Trạng thái
-                th Hoạt động
-            tbody
-                each item, index  in product
-                    if(item)
-                        tr
-                            td #{index + 1}
-                            td 
-                                img(
-                                    src=`${item.thumbnail}`
-                                    alt=`${item.title}`
-                                    width=`100px`
-                                    height=`auto`
-                                )
-                            td #{item.title}
-                            td #{item.stringPrice}đ
-                            td #{item.discountPercentage}%
-                            td #{item.stock}
-                            td 
-                                if (item.status === 'active')
-                                    a(href="#" class = `badge badge-success`) Hoạt Động
-                                else 
-                                    a(href="#" class = `badge badge-danger`) Dừng hoạt Động
-                            td 
-                                button(class = `btn btn-warning btn-sm`) Sửa
-                                button(class = `btn btn-danger btn-sm ml-1`) Xóa
-                    else 
-                        span Không có sản phẩm nào
+    .card.mb-3
+        .card-header.mt-2 
+            h4 Bộ lọc và Tìm kiếm
+        .card-body
+            .row
+                .col-9 
+                    each btn in btnStatus
+                        button(class = `btn btn-sm ml-1 btn-outline-success ${btn.class}` btn-status=`${btn.status}`) #{btn.name}
+                   
+                .col-3 
+                    form(id='form-seach')
+                        .input-group
+                            input(type='text' placeholder='Nhập từ khóa' name='keyword' class='from-control')
+                            .input-group-append
+                                button(class='btn btn-success' type='submit') Tìm
+    .card.mb-3
+        .card-header.mt-3
+            h4 Danh sách sản phẩm
+        .card-body
+            table.table.table-hover.table-sm
+                thead
+                    tr
+                        th STT
+                        th Hình ảnh
+                        th Tên sản Phẩm 
+                        th Giá 
+                        th Giảm (%)
+                        th Số lượng 
+                        th Trạng thái
+                        th Hoạt động
+                    tbody
+                        each item, index  in product
+                            if(item)
+                                tr
+                                    td #{index + 1}
+                                    td 
+                                        img(
+                                            src=`${item.thumbnail}`
+                                            alt=`${item.title}`
+                                            width=`100px`
+                                            height=`auto`
+                                        )
+                                    td #{item.title}
+                                    td #{item.stringPrice}đ
+                                    td #{item.discountPercentage}%
+                                    td #{item.stock}
+                                    td 
+                                        if (item.status === 'active')
+                                            a(href="#" class = `badge badge-success`) Hoạt Động
+                                        else 
+                                            a(href="#" class = `badge badge-danger`) Dừng hoạt Động
+                                    td 
+                                        button(class = `btn btn-warning btn-sm`) Sửa
+                                        button(class = `btn btn-danger btn-sm ml-1`) Xóa
+                            else 
+                                span Không có sản phẩm nào

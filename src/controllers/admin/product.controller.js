@@ -15,17 +15,50 @@ module.exports.index = async (req, res) => {
         return formatted;
     }
     try {
-        const products = await producMmodel.find({
+        const find = {
             deleted: false
-        });
+        };
+        const query = req.query;
+
+        // req status
+        const btnStatus = [
+            {
+                name: 'Tất cả',
+                status: '',
+                class: ''
+            },
+            {
+                name: 'Hoạt Động',
+                status: 'active',
+                class: ''
+            },
+            {
+                name: 'Dừng Hoạt động',
+                status: 'inactive',
+                class: ''
+            }
+        ];
+        if (query.status) {
+            const index = btnStatus.findIndex((btn) => {
+                return btn.status === query.status;
+            });
+            btnStatus[index].class = 'active';
+            find.status = query.status;
+        }
+        else {
+            btnStatus[0].class = 'active';
+        }
+
+        // call DB
+        const products = await producMmodel.find(find);
 
         // formatt price
         products.forEach((product, index, products) => {
             products[index].stringPrice = formattPrice(product.price);
         });
-
         res.render('admin/pages/product/index.pug', {
-            product: products
+            product: products,
+            btnStatus: btnStatus
         });
     } catch (err) {
 

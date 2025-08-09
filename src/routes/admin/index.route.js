@@ -1,7 +1,8 @@
 const dashboardRoutes = require('./dashboard.route.js');
 const productRoutes = require('./product.route.js');
 
+const system = require('../../config/systems.js')
 module.exports = (app) => {
-    app.use('/admin/dashboard', dashboardRoutes);
-    app.use('/admin/products', productRoutes)
+    app.use(`${system.prefixAdmin}/dashboard`, dashboardRoutes);
+    app.use(`${system.prefixAdmin}/products`, productRoutes)
 };
