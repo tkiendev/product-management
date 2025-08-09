@@ -19,7 +19,6 @@ module.exports.index = async (req, res) => {
             deleted: false
         };
         const query = req.query;
-        console.log(req.query);
 
         // req status
         const listBtnStatus = [
@@ -50,8 +49,7 @@ module.exports.index = async (req, res) => {
             const index = listBtnStatus.findIndex((btn) => {
                 return btn.status === '';
             });
-            console.log(index);
-            listBtnStatus[0].class = 'active';
+            listBtnStatus[index].class = 'active';
         }
 
         // call DB
