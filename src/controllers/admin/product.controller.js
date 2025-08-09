@@ -19,9 +19,10 @@ module.exports.index = async (req, res) => {
             deleted: false
         };
         const query = req.query;
+        console.log(req.query);
 
         // req status
-        const btnStatus = [
+        const listBtnStatus = [
             {
                 name: 'Tất cả',
                 status: '',
@@ -39,14 +40,18 @@ module.exports.index = async (req, res) => {
             }
         ];
         if (query.status) {
-            const index = btnStatus.findIndex((btn) => {
+            const index = listBtnStatus.findIndex((btn) => {
                 return btn.status === query.status;
             });
-            btnStatus[index].class = 'active';
+            listBtnStatus[index].class = 'active';
             find.status = query.status;
         }
         else {
-            btnStatus[0].class = 'active';
+            const index = listBtnStatus.findIndex((btn) => {
+                return btn.status === '';
+            });
+            console.log(index);
+            listBtnStatus[0].class = 'active';
         }
 
         // call DB
@@ -57,8 +62,9 @@ module.exports.index = async (req, res) => {
             products[index].stringPrice = formattPrice(product.price);
         });
         res.render('admin/pages/product/index.pug', {
+            titlePage: 'Quản lý sản phẩm',
             product: products,
-            btnStatus: btnStatus
+            btnStatus: listBtnStatus
         });
     } catch (err) {
 
