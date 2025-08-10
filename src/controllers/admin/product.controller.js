@@ -21,6 +21,9 @@ module.exports.index = async (req, res) => {
         const query = req.query;
 
         // req status
+        if (query.status) {
+            find.status = query.status;
+        }
         const listBtnStatus = [
             {
                 name: 'Tất cả',
@@ -43,13 +46,20 @@ module.exports.index = async (req, res) => {
                 return btn.status === query.status;
             });
             listBtnStatus[index].class = 'active';
-            find.status = query.status;
         }
         else {
             const index = listBtnStatus.findIndex((btn) => {
                 return btn.status === '';
             });
             listBtnStatus[index].class = 'active';
+        }
+
+        // red form search
+        let keywordSreach = '';
+        if (query.keyword) {
+            let regex = new RegExp(query.keyword, 'i');
+            find.title = regex;
+            keywordSreach = query.keyword;
         }
 
         // call DB
@@ -62,7 +72,8 @@ module.exports.index = async (req, res) => {
         res.render('admin/pages/product/index.pug', {
             titlePage: 'Quản lý sản phẩm',
             product: products,
-            btnStatus: listBtnStatus
+            btnStatus: listBtnStatus,
+            keywordSreach: keywordSreach
         });
     } catch (err) {
 

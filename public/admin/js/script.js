@@ -1,6 +1,6 @@
 
 const href = window.location.href;
-let url = new URL(href)
+let url = new URL(href);
 
 // event btn status
 const btnStatus = document.querySelectorAll('[btn-status]');
@@ -12,8 +12,25 @@ btnStatus.forEach((btn) => {
         } else {
             url.searchParams.delete('status');
         }
-        console.log(url.href);
         window.location.replace(url);
     });
 
 });
+
+// event form sreach 
+const formSreach = document.getElementById('form-seach');
+
+if (formSreach) {
+    formSreach.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const keyword = event.target.elements.keyword.value;
+        if (keyword !== '') {
+            url.searchParams.set('keyword', keyword);
+        }
+        else {
+            console.log(1)
+            url.searchParams.delete('keyword');
+        }
+        window.location.replace(url);
+    });
+}

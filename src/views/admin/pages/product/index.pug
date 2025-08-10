@@ -7,14 +7,14 @@ block main
             h4 Bộ lọc và Tìm kiếm
         .card-body
             .row
-                .col-9 
+                .col-8 
                     each btn in btnStatus
                         button(class = `btn btn-sm ml-1 btn-outline-success ${btn.class}` btn-status=`${btn.status}`) #{btn.name}
                    
-                .col-3 
+                .col-4
                     form(id='form-seach')
                         .input-group
-                            input(type='text' placeholder='Nhập từ khóa' name='keyword' class='from-control')
+                            input(type='text' placeholder='Nhập từ khóa' name='keyword' class='from-control' value = `${keywordSreach}`)
                             .input-group-append
                                 button(class='btn btn-success' type='submit') Tìm
     .card.mb-3
@@ -58,3 +58,16 @@ block main
                                         button(class = `btn btn-danger btn-sm ml-1`) Xóa
                             else 
                                 span Không có sản phẩm nào
+    
+    .row.col-12.d-flex.justify-content-center
+        ul(class='pagination ')
+            li(clasa='page-item')
+                button(class='page-link') <
+            li(clasa='page-item')
+                button(class='page-link') 1 
+            li(clasa='page-item')
+                button(class='page-link') 2 
+            li(clasa='page-item')
+                button(class='page-link') 3 
+            li(clasa='page-item')
+                button(class='page-link') >  
