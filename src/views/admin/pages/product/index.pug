@@ -21,9 +21,24 @@ block main
         .card-header.mt-3
             h4 Danh sách sản phẩm
         .card-body
+            form(
+                action=`/${prefixAdmin}/produts/change-multi?_method=PATCH`
+                method='POST'
+                form-change-multi=''
+            )
+                .d-flex.align-items-start
+                    .form-group
+                        select(name='type' class='form-control')
+                            option(value='active') Hoạt động
+                            option(value='inactive') Đưng Hoạt động
+                    .form-group
+                        input(type='text' name='ids' value='' class='form-control')
+                    button(type='submut' class='btn btn-primary') Áp Dụng
             table.table.table-hover.table-sm
                 thead
                     tr
+                        th 
+                            input(type='checkbox' name='checkall')
                         th STT
                         th Hình ảnh
                         th Tên sản Phẩm 
@@ -36,6 +51,8 @@ block main
                         each item, index  in product
                             if(item)
                                 tr
+                                    td
+                                        input(type='checkbox' name='id' value=item.id)
                                     td #{index + 1}
                                     td 
                                         img(
@@ -62,12 +79,15 @@ block main
     .row.col-12.d-flex.justify-content-center
         ul(class='pagination ')
             li(clasa='page-item')
-                button(class='page-link') <
+                    button(class='page-link mr-2' btn-Page=``) Về trang đầu 
+            - if(paginationPage.currentPage > 1)
+                li(clasa='page-item')
+                    button(class='page-link' btn-Page=`${paginationPage.currentPage -1 }`) <
+            - for (let index = 1; index <= paginationPage.totalPage; index++)
+                li(clasa='page-item')
+                    button(class=` btn ${index == paginationPage.currentPage ? 'btn-info' : ''}` btn-Page=`${index}`) #{index}
+            - if(paginationPage.currentPage < paginationPage.totalPage)
+                li(clasa='page-item')
+                    button(class='page-link' btn-Page=`${paginationPage.currentPage + 1}`) >  
             li(clasa='page-item')
-                button(class='page-link') 1 
-            li(clasa='page-item')
-                button(class='page-link') 2 
-            li(clasa='page-item')
-                button(class='page-link') 3 
-            li(clasa='page-item')
-                button(class='page-link') >  
+                    button(class='page-link ml-2' btn-Page=`${paginationPage.totalPage}`) Về trang cuối

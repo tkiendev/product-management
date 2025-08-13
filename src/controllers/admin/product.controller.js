@@ -62,8 +62,18 @@ module.exports.index = async (req, res) => {
             keywordSreach = query.keyword;
         }
 
+        // pagination page
+        const paginationPage = {
+            limited: 4,
+            currentPage: 1
+        }
+        paginationPage.totalPage = Math.ceil(await producMmodel.countDocuments({ deleted: false }) / paginationPage.limited);
+        if (query.page && !isNaN(query.page)) {
+            paginationPage.currentPage = Number(query.page);
+        }
+
         // call DB
-        const products = await producMmodel.find(find);
+        const products = await producMmodel.find(find).skip((paginationPage.currentPage - 1) * paginationPage.limited).limit(paginationPage.limited);
 
         // formatt price
         products.forEach((product, index, products) => {
@@ -73,7 +83,8 @@ module.exports.index = async (req, res) => {
             titlePage: 'Quản lý sản phẩm',
             product: products,
             btnStatus: listBtnStatus,
-            keywordSreach: keywordSreach
+            keywordSreach: keywordSreach,
+            paginationPage: paginationPage
         });
     } catch (err) {
 

@@ -19,7 +19,6 @@ btnStatus.forEach((btn) => {
 
 // event form sreach 
 const formSreach = document.getElementById('form-seach');
-
 if (formSreach) {
     formSreach.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -32,5 +31,22 @@ if (formSreach) {
             url.searchParams.delete('keyword');
         }
         window.location.replace(url);
+    });
+}
+
+// event pagination page
+const btnPage = document.querySelectorAll('[btn-Page]');
+if (btnPage) {
+    btnPage.forEach(page => {
+        page.addEventListener('click', () => {
+            const currentPage = page.getAttribute('btn-Page');
+            if (currentPage && currentPage > 1) {
+                url.searchParams.set('page', currentPage);
+            }
+            else {
+                url.searchParams.delete('page');
+            }
+            window.location.replace(url);
+        })
     });
 }
