@@ -31,9 +31,9 @@ module.exports.index = async (req, res) => {
                 class: ''
             }
         ];
+        listBtnStatus = filterStatusHelper(query, listBtnStatus);
         if (query.status) {
             find.status = query.status;
-            listBtnStatus = filterStatusHelper(query, listBtnStatus);
         }
 
         // red form search
@@ -66,6 +66,24 @@ module.exports.index = async (req, res) => {
             paginationPage: paginationPage
         });
     } catch (err) {
+        console.log(error);
+    }
+};
+
+// [GET]: /admin/products/change-stauts/:status/:id
+module.exports.changeStatus = async (req, res) => {
+    try {
+        if (req.params) {
+            const productStatus = req.params.status;
+            const productId = req.params.id;
+            await producMmodel.updateOne(
+                { _id: productId },
+                { $set: { status: productStatus } }
+            )
+            const previousUrl = req.get('Referer') || '/';
+            res.redirect(previousUrl);
+        }
+    } catch (error) {
         console.log(error);
     }
 };

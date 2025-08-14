@@ -1,5 +1,4 @@
 const href = window.location.href;
-
 // event btn status
 const btnStatus = document.querySelectorAll('[btn-status]');
 if (btnStatus) {
@@ -28,7 +27,6 @@ if (formSreach) {
             url.searchParams.set('keyword', keyword);
         }
         else {
-            console.log(1)
             url.searchParams.delete('keyword');
         }
         window.location.replace(url);
@@ -42,6 +40,7 @@ if (btnPage) {
     btnPage.forEach(page => {
         page.addEventListener('click', () => {
             const currentPage = page.getAttribute('btn-Page');
+
             if (currentPage && currentPage > 1) {
                 url.searchParams.set('page', currentPage);
             }
