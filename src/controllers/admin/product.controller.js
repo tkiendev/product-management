@@ -1,19 +1,12 @@
 const producMmodel = require('../../models/product.model.js');
 
+const formattPriceHelper = require('../../helpers/formattPrice.js');
+const filterStatusHelper = require('../../helpers/filterStatus.js');
+const seachHelper = require('../../helpers/seach.js');
+const paginationPageHelper = require('../../helpers/paginationPage.js');
+
+// [GET]: /admin/products
 module.exports.index = async (req, res) => {
-    const formattPrice = (number) => {
-        const string = number.toString();
-        const charArray = string.split('');
-        let count = 1;
-        for (let i = charArray.length - 1; i >= 0; i--) {
-            if (count % 3 === 0) {
-                charArray.splice(i, 0, '.');
-            }
-            count++;
-        }
-        const formatted = charArray.join('');
-        return formatted;
-    }
     try {
         const find = {
             deleted: false
@@ -21,10 +14,7 @@ module.exports.index = async (req, res) => {
         const query = req.query;
 
         // req status
-        if (query.status) {
-            find.status = query.status;
-        }
-        const listBtnStatus = [
+        let listBtnStatus = [
             {
                 name: 'Tất cả',
                 status: '',
@@ -42,43 +32,32 @@ module.exports.index = async (req, res) => {
             }
         ];
         if (query.status) {
-            const index = listBtnStatus.findIndex((btn) => {
-                return btn.status === query.status;
-            });
-            listBtnStatus[index].class = 'active';
-        }
-        else {
-            const index = listBtnStatus.findIndex((btn) => {
-                return btn.status === '';
-            });
-            listBtnStatus[index].class = 'active';
+            find.status = query.status;
+            listBtnStatus = filterStatusHelper(query, listBtnStatus);
         }
 
         // red form search
         let keywordSreach = '';
         if (query.keyword) {
-            let regex = new RegExp(query.keyword, 'i');
-            find.title = regex;
-            keywordSreach = query.keyword;
+            keywordSreach = seachHelper(query).keywordSreach;
+            find.title = seachHelper(query).title;
         }
 
         // pagination page
-        const paginationPage = {
+        let paginationPage = {
             limited: 4,
             currentPage: 1
         }
-        paginationPage.totalPage = Math.ceil(await producMmodel.countDocuments({ deleted: false }) / paginationPage.limited);
-        if (query.page && !isNaN(query.page)) {
-            paginationPage.currentPage = Number(query.page);
-        }
+        paginationPage = await paginationPageHelper(paginationPage, query, await producMmodel.countDocuments({ ...find, deleted: false }));
 
         // call DB
         const products = await producMmodel.find(find).skip((paginationPage.currentPage - 1) * paginationPage.limited).limit(paginationPage.limited);
 
         // formatt price
         products.forEach((product, index, products) => {
-            products[index].stringPrice = formattPrice(product.price);
+            products[index].stringPrice = formattPriceHelper(product.price);
         });
+
         res.render('admin/pages/product/index.pug', {
             titlePage: 'Quản lý sản phẩm',
             product: products,
@@ -87,7 +66,6 @@ module.exports.index = async (req, res) => {
             paginationPage: paginationPage
         });
     } catch (err) {
-
+        console.log(error);
     }
-
 };

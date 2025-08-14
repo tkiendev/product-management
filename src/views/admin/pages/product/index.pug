@@ -1,4 +1,7 @@
 extends ../../layouts/default.pug
+include ../../mixins/filterStatus.pug
+include ../../mixins/formSreach.pug
+include ../../mixins/pagination.pug
 
 block main    
 
@@ -8,15 +11,10 @@ block main
         .card-body
             .row
                 .col-8 
-                    each btn in btnStatus
-                        button(class = `btn btn-sm ml-1 btn-outline-success ${btn.class}` btn-status=`${btn.status}`) #{btn.name}
+                    + filterStatus(btnStatus)
                    
                 .col-4
-                    form(id='form-seach')
-                        .input-group
-                            input(type='text' placeholder='Nhập từ khóa' name='keyword' class='from-control' value = `${keywordSreach}`)
-                            .input-group-append
-                                button(class='btn btn-success' type='submit') Tìm
+                    + formSreach(keywordSreach)
     .card.mb-3
         .card-header.mt-3
             h4 Danh sách sản phẩm
@@ -77,17 +75,4 @@ block main
                                 span Không có sản phẩm nào
     
     .row.col-12.d-flex.justify-content-center
-        ul(class='pagination ')
-            li(clasa='page-item')
-                    button(class='page-link mr-2' btn-Page=``) Về trang đầu 
-            - if(paginationPage.currentPage > 1)
-                li(clasa='page-item')
-                    button(class='page-link' btn-Page=`${paginationPage.currentPage -1 }`) <
-            - for (let index = 1; index <= paginationPage.totalPage; index++)
-                li(clasa='page-item')
-                    button(class=` btn ${index == paginationPage.currentPage ? 'btn-info' : ''}` btn-Page=`${index}`) #{index}
-            - if(paginationPage.currentPage < paginationPage.totalPage)
-                li(clasa='page-item')
-                    button(class='page-link' btn-Page=`${paginationPage.currentPage + 1}`) >  
-            li(clasa='page-item')
-                    button(class='page-link ml-2' btn-Page=`${paginationPage.totalPage}`) Về trang cuối
+        + pagination(paginationPage)

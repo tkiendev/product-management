@@ -1,0 +1,6 @@
+mixin formSreach (keywordSreach)
+    form(id='form-seach')
+        .input-group
+            input(type='text' placeholder='Nhập từ khóa' name='keyword' class='from-control' value = `${keywordSreach}`)
+            .input-group-append
+                button(class='btn btn-success' type='submit') Tìm

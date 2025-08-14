@@ -1,5 +1,6 @@
 const productModel = require('../../models/product.model');
 
+// [GET] /products
 module.exports.index = async (req, res) => {
     const formattPrice = (number) => {
         const string = number.toString();
