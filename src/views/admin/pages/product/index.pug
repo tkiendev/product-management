@@ -74,6 +74,6 @@ block main
                             else 
                                 span Không có sản phẩm nào
     
-    form(action="" method="GET" change-status path=`${prefixAdmin}/products/change-status`) 
+    form(action="" method="POST" change-status path=`${prefixAdmin}/products/change-status`) 
     .row.col-12.d-flex.justify-content-center
         + pagination(paginationPage)

@@ -7,6 +7,8 @@ const routerAdmin = require('./routes/admin/index.route');
 const path = require('path');
 const mongodb = require('./config/database');
 
+const methodOverride = require('method-override');
+
 // App locals Variables
 const systemConfig = require('./config/systems');
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
@@ -18,6 +20,7 @@ app.use(express.static(path.join(__dirname, '../', 'public')));
 
 app.set('views', './src/views');
 app.set('view engine', 'pug');
+app.use(methodOverride('_method'));
 
 // connection DB
 mongodb.connection();

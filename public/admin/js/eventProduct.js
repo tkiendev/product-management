@@ -10,7 +10,7 @@ if (btnchangeStatus.length > 0) {
             statusProduct.id = item.getAttribute('id');
 
             const path = formChangeStatus.getAttribute('path');
-            formChangeStatus.action = `${path}/${statusProduct.status}/${statusProduct.id}`
+            formChangeStatus.action = `${path}/${statusProduct.status}/${statusProduct.id}?_method=PATCH`
             formChangeStatus.submit();
         });
     });
