@@ -1,5 +1,7 @@
-const producMmodel = require('../../models/product.model.js');
+// Model
+const producModel = require('../../models/product.model.js');
 
+// helper
 const formattPriceHelper = require('../../helpers/formattPrice.js');
 const filterStatusHelper = require('../../helpers/filterStatus.js');
 const seachHelper = require('../../helpers/seach.js');
@@ -48,10 +50,10 @@ module.exports.index = async (req, res) => {
             limited: 4,
             currentPage: 1
         }
-        paginationPage = await paginationPageHelper(paginationPage, query, await producMmodel.countDocuments({ ...find, deleted: false }));
+        paginationPage = await paginationPageHelper(paginationPage, query, await producModel.countDocuments({ ...find, deleted: false }));
 
         // call DB
-        const products = await producMmodel.find(find).skip((paginationPage.currentPage - 1) * paginationPage.limited).limit(paginationPage.limited);
+        const products = await producModel.find(find).skip((paginationPage.currentPage - 1) * paginationPage.limited).limit(paginationPage.limited);
 
         // formatt price
         products.forEach((product, index, products) => {
@@ -70,16 +72,36 @@ module.exports.index = async (req, res) => {
     }
 };
 
-// [GET]: /admin/products/change-stauts/:status/:id
+// [PATCH]: /admin/products/change-stauts/:status/:id
 module.exports.changeStatus = async (req, res) => {
     try {
         if (req.params) {
             const productStatus = req.params.status;
             const productId = req.params.id;
-            await producMmodel.updateOne(
+            await producModel.updateOne(
                 { _id: productId },
                 { $set: { status: productStatus } }
-            )
+            );
+            const previousUrl = req.get('Referer') || '/';
+            res.redirect(previousUrl);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// [PATCH]: /admin/products/change-multi
+module.exports.changeMulti = async (req, res) => {
+    try {
+        const query = req.body;
+        if (query) {
+            const status = query.type;
+            const ids = query.ids.split(',');
+            await producModel.updateMany(
+                { _id: { $in: ids } },
+                { $set: { status: status } }
+            );
+
             const previousUrl = req.get('Referer') || '/';
             res.redirect(previousUrl);
         }

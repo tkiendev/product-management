@@ -4,7 +4,6 @@ include ../../mixins/formSreach.pug
 include ../../mixins/pagination.pug
 
 block main    
-
     .card.mb-3
         .card-header.mt-2 
             h4 Bộ lọc và Tìm kiếm
@@ -20,23 +19,24 @@ block main
             h4 Danh sách sản phẩm
         .card-body
             form(
-                action=`/${prefixAdmin}/produts/change-multi?_method=PATCH`
+                action=`${prefixAdmin}/products/change-multi?_method=PATCH`
                 method='POST'
                 form-change-multi=''
             )
                 .d-flex.align-items-start
                     .form-group
                         select(name='type' class='form-control')
-                            option(value='active') Hoạt động
-                            option(value='inactive') Đưng Hoạt động
+                            each option in btnStatus
+                                if(option.status !== '')
+                                    option(value=option.status) #{option.name}
                     .form-group
-                        input(type='text' name='ids' value='' class='form-control')
+                        input(type='text' name='ids' value='' class='form-control d-none')
                     button(type='submut' class='btn btn-primary') Áp Dụng
-            table.table.table-hover.table-sm
+            table(class='table table-hover table-sm' table-check)
                 thead
                     tr
                         th 
-                            //- input(type='checkbox' name='checkall')
+                            input(type='checkbox' name='checkAll')
                         th STT
                         th Hình ảnh
                         th Tên sản Phẩm 
@@ -50,7 +50,7 @@ block main
                             if(item)
                                 tr
                                     td
-                                        //- input(type='checkbox' name='id' value=item.id)
+                                        input(type='checkbox' name='id' check-box value=item.id)
                                     td #{index + 1}
                                     td 
                                         img(
@@ -75,5 +75,4 @@ block main
                                 span Không có sản phẩm nào
     
     form(action="" method="POST" change-status path=`${prefixAdmin}/products/change-status`) 
-    .row.col-12.d-flex.justify-content-center
-        + pagination(paginationPage)
+    + pagination(paginationPage)
