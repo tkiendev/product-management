@@ -1,0 +1,12 @@
+mixin notification(messages, time)
+    //- Thông báo thành công
+    if(messages.success)
+        .notification.notification-success#successBox.show
+            span ✅ #{messages.success} | 
+            button(class='close-btn' btn-notification data-time=time) ×
+
+    //- Thông báo lỗi
+    if(messages.error)
+        .notification.notification-error#errorBox
+            span ✅ cập nhật không thành công | 
+            button.close-btn(class='close-btn' btn-notification data-time=time) ×

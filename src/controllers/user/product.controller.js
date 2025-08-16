@@ -19,7 +19,7 @@ module.exports.index = async (req, res) => {
         const products = await productModel.find({
             status: 'active',
             deleted: false
-        });
+        }).sort({ position: 1 });
         const newProducts = products.map((product) => {
             const objProduct = product;
             objProduct.stringNewPrice = formattPrice(product.price - (product.price * product.discountPercentage / 100));

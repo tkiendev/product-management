@@ -3,10 +3,12 @@ include ../../mixins/filterStatus.pug
 include ../../mixins/formSreach.pug
 include ../../mixins/pagination.pug
 include ../../mixins/formChangeMulti.pug
+include ../../mixins/notification.pug
+
 
 
 block main    
-
+    + notification(messages, 5000)
     .card.mb-3
         .card-header.mt-2 
             h4 Bộ lọc và Tìm kiếm
@@ -21,7 +23,7 @@ block main
         .card-header.mt-3
             h4 Danh sách sản phẩm
         .card-body
-            + formchangeMulti(`${prefixAdmin}/products/change-multi?_method=PATCH`, btnStatus)
+            + formchangeMulti(`${prefixAdmin}/products/change-multi?_method=PATCH`, listOption)
             table(class='table table-hover table-sm' table-check)
                 thead
                     tr
@@ -33,6 +35,7 @@ block main
                         th Giá 
                         th Giảm (%)
                         th Số lượng 
+                        th Vị trí
                         th Trạng thái
                         th Hoạt động
                     tbody
@@ -53,16 +56,21 @@ block main
                                     td #{item.stringPrice}đ
                                     td #{item.discountPercentage}%
                                     td #{item.stock}
+                                    td
+                                        input(type='number' value=item.position style="width: 6ch" input-position)
                                     td 
                                         if (item.status === 'active')
-                                            a(href="javascript" class = `badge badge-success` data-status=item.status id=item.id) Hoạt Động
+                                            a(href="" class = `badge badge-success` data-status=item.status id=item.id) Hoạt Động
                                         else 
-                                            a(href="javascript" class = `badge badge-danger`  data-status=item.status id=item.id) Dừng hoạt Động
+                                            a(href="" class = `badge badge-danger`  data-status=item.status id=item.id) Dừng hoạt Động
                                     td 
                                         button(class = `btn btn-warning btn-sm`) Sửa
-                                        button(class = `btn btn-danger btn-sm ml-1`) Xóa
+                                        button(class = `btn btn-danger btn-sm ml-1` btn-delete id=item.id) Xóa
                             else 
                                 span Không có sản phẩm nào
     
-    form(action="" method="POST" change-status path=`${prefixAdmin}/products/change-status`) 
+    form(action="" method="POST" change-status path=`${prefixAdmin}/products/change-status`)
+    form(action="" method="POST" change-delete path=`${prefixAdmin}/products/change-delete`) 
+
     + pagination(paginationPage)
+    <script src="/admin/js/eventProduct.js"></script>

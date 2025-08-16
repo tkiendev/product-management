@@ -15,6 +15,29 @@ module.exports.index = async (req, res) => {
         };
         const query = req.query;
 
+        // value option 
+        let listOption = [
+            {
+                name: '- Chọn hành động -',
+                type: '',
+            },
+            {
+                name: 'Hoạt Động',
+                type: 'active',
+            },
+            {
+                name: 'Dừng Hoạt động',
+                type: 'inactive',
+            },
+            {
+                name: 'Xóa sản phẩm',
+                type: 'delete',
+            },
+            {
+                name: 'Cập nhật vị trí',
+                type: 'position',
+            }
+        ];
         // req status
         let listBtnStatus = [
             {
@@ -53,7 +76,7 @@ module.exports.index = async (req, res) => {
         paginationPage = await paginationPageHelper(paginationPage, query, await producModel.countDocuments({ ...find, deleted: false }));
 
         // call DB
-        const products = await producModel.find(find).skip((paginationPage.currentPage - 1) * paginationPage.limited).limit(paginationPage.limited);
+        const products = await producModel.find(find).sort({ position: 1 }).skip((paginationPage.currentPage - 1) * paginationPage.limited).limit(paginationPage.limited);
 
         // formatt price
         products.forEach((product, index, products) => {
@@ -65,7 +88,8 @@ module.exports.index = async (req, res) => {
             product: products,
             btnStatus: listBtnStatus,
             keywordSreach: keywordSreach,
-            paginationPage: paginationPage
+            paginationPage: paginationPage,
+            listOption: listOption
         });
     } catch (err) {
         console.log(error);
@@ -82,8 +106,10 @@ module.exports.changeStatus = async (req, res) => {
                 { _id: productId },
                 { $set: { status: productStatus } }
             );
+            req.flash('success', `Cập nhật "${productStatus}" thành công`);
             const previousUrl = req.get('Referer') || '/';
             res.redirect(previousUrl);
+
         }
     } catch (error) {
         console.log(error);
@@ -97,14 +123,67 @@ module.exports.changeMulti = async (req, res) => {
         if (query) {
             const status = query.type;
             const ids = query.ids.split(',');
-            await producModel.updateMany(
-                { _id: { $in: ids } },
-                { $set: { status: status } }
-            );
+
+            switch (status) {
+                case 'active': {
+                    await producModel.updateMany(
+                        { _id: { $in: ids } },
+                        { $set: { status: status } }
+                    );
+                    break;
+                }
+                case 'inactive': {
+                    await producModel.updateMany(
+                        { _id: { $in: ids } },
+                        { $set: { status: status } }
+                    );
+                    break;
+                }
+                case 'delete': {
+                    await producModel.updateMany(
+                        { _id: { $in: ids } },
+                        { $set: { deleted: true } }
+                    );
+                    break;
+                }
+                case 'position': {
+                    let ids = query.ids.split(',');
+                    let position = [];
+                    ids = ids.map(item => {
+                        let [id, p] = item.split('-');
+                        position.push(parseInt(p));
+                        return id;
+                    });
+                    ids.forEach(async (id, index) => {
+                        await producModel.updateOne(
+                            { _id: id },
+                            { $set: { position: position[index] } }
+                        );
+                    });
+                    break;
+                }
+                default:
+                    break;
+            }
 
             const previousUrl = req.get('Referer') || '/';
             res.redirect(previousUrl);
         }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// [DLETE]: /admin/products/change-dalete
+module.exports.changeDelete = async (req, res) => {
+    try {
+        const id = req.params.id;
+        if (id) {
+            await producModel.updateOne({ _id: id }, { deleted: true });
+        }
+        req.flash('success', 'Xóa thành công');
+        const previousUrl = req.get('Referer') || '/';
+        res.redirect(previousUrl);
     } catch (error) {
         console.log(error);
     }

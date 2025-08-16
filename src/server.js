@@ -11,6 +11,14 @@ const mongodb = require('./config/database');
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
 
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+// flash mess
+const flash = require('express-flash');
+app.use(cookieParser('keyboard cat'));
+app.use(session({ cookie: { maxAge: 60000 } }));
+app.use(flash());
+
 // req body
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded()); // parse application/x-www-form-urlencoded
@@ -37,5 +45,5 @@ routerAdmin(app);
 route(app);
 
 app.listen(port, () => {
-    console.log(`\nhttp://localhost: ${port} ==================`);
+    console.log(`\n ================== http://localhost: ${port} ==================`);
 });
