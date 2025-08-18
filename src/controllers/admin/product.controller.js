@@ -188,3 +188,40 @@ module.exports.changeDelete = async (req, res) => {
         console.log(error);
     }
 };
+
+// [GET]: /admin/products/create
+module.exports.create = async (req, res) => {
+    try {
+        res.render('admin/pages/product/create.pug', {
+            titlePage: 'Thêm mới sản phẩm'
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// [POST]: /admin/products/create
+module.exports.actionCreate = async (req, res) => {
+    try {
+        if (req) {
+            const port = process.env.PORT || 3001;
+
+            const product = req.body;
+            product.position = parseInt((await producModel.countDocuments({ deleted: false })) + 1);
+            product.price = parseInt(product.price);
+            product.discountPercentage = parseInt(product.discountPercentage);
+            product.stock = parseInt(product.stock);
+            product.thumbnail = `http://localhost:${port}/uploads/${req.file.filename}`;
+
+            await (new producModel(product)).save();
+
+            req.flash('success', 'Tạo sản phẩm thành công');
+            const previousUrl = '/admin/products';
+            res.redirect(previousUrl);
+
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+

@@ -50,7 +50,7 @@
 .notification {
     position: fixed;
     top: 20px;
-    right: -350px; // bắt đầu ngoài màn hình
+    right: -350px;
     min-width: 300px;
     padding: 15px 20px;
     border-radius: 6px;
