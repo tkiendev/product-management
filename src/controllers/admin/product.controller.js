@@ -112,7 +112,7 @@ module.exports.changeStatus = async (req, res) => {
 
         }
     } catch (error) {
-        console.log(error);
+        req.flash('error', 'Cập nhật không thành công');
     }
 };
 
@@ -120,7 +120,9 @@ module.exports.changeStatus = async (req, res) => {
 module.exports.changeMulti = async (req, res) => {
     try {
         const query = req.body;
+
         if (query) {
+            let success = '';
             const status = query.type;
             const ids = query.ids.split(',');
 
@@ -130,6 +132,7 @@ module.exports.changeMulti = async (req, res) => {
                         { _id: { $in: ids } },
                         { $set: { status: status } }
                     );
+                    success = `Đã cập nhật thành công thành "Hoạt động"`;
                     break;
                 }
                 case 'inactive': {
@@ -137,6 +140,7 @@ module.exports.changeMulti = async (req, res) => {
                         { _id: { $in: ids } },
                         { $set: { status: status } }
                     );
+                    success = `Đã cập nhật thành công thành "Dừng hoạt động"`;
                     break;
                 }
                 case 'delete': {
@@ -144,6 +148,7 @@ module.exports.changeMulti = async (req, res) => {
                         { _id: { $in: ids } },
                         { $set: { deleted: true } }
                     );
+                    success = `Đã xóa thành công`;
                     break;
                 }
                 case 'position': {
@@ -160,17 +165,21 @@ module.exports.changeMulti = async (req, res) => {
                             { $set: { position: position[index] } }
                         );
                     });
+                    success = `Thay đổi vị trí thành công`;
                     break;
                 }
                 default:
+                    req.flash('error', 'Lựa chọn không hợp lệ');
                     break;
             }
+
+            req.flash('success', success);
 
             const previousUrl = req.get('Referer') || '/';
             res.redirect(previousUrl);
         }
     } catch (error) {
-        console.log(error);
+        req.flash('error', 'Cập nhật không thành công');
     }
 };
 
@@ -181,11 +190,13 @@ module.exports.changeDelete = async (req, res) => {
         if (id) {
             await producModel.updateOne({ _id: id }, { deleted: true });
         }
-        req.flash('success', 'Xóa thành công');
+
+        req.flash('success', 'Xóa thành công sản phẩm');
+
         const previousUrl = req.get('Referer') || '/';
         res.redirect(previousUrl);
     } catch (error) {
-        console.log(error);
+        req.flash('error', 'Cập nhật không thành công');
     }
 };
 
@@ -196,7 +207,7 @@ module.exports.create = async (req, res) => {
             titlePage: 'Thêm mới sản phẩm'
         });
     } catch (error) {
-        console.log(error);
+        req.flash('error', 'Cập nhật không thành công');
     }
 };
 
@@ -221,7 +232,7 @@ module.exports.actionCreate = async (req, res) => {
 
         }
     } catch (error) {
-        console.log(error);
+        req.flash('error', 'Cập nhật không thành công');
     }
 };
 
