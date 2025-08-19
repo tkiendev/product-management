@@ -25,7 +25,10 @@ block main
                     input(type='number' name='stock' id='stock' class='form-control' value=product.stock min=0)
                 div(class='form-group')
                     label(for='thumbnail') Ảnh
-                    input(type='file' name='thumbnail' id='thumbnail' class='form-control') 
+                    input(type='file' name='thumbnail' id='thumbnail' class='form-control' accept="image/*") 
+                    div(class=`row mt-2` id='view')
+                        .col-6
+                            img(id="preview" src=product.thumbnail alt="Ảnh xem trước" style="max-width: 300px")
                 div(class='form-group')
                     label(for='position') vị trí
                     input(type='number' name='position' id='position' class='form-control' min=1 placeholder='Tự động tăng' value=product.position) 
@@ -36,3 +39,5 @@ block main
                     input(type='radio' name='status' id='statusInactive' class='form-check-input' value='inactive'  checked=(product.status === 'inactive'? true : fasle)) 
                     lable(for='statusInactive' class='form-check-lable') Dừng hoạt động
                 button(type="submit" class='btn btn-primary d-block') Lưu
+    
+    <script src="/admin/js/eventProduct.js"></script>

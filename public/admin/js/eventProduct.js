@@ -1,4 +1,3 @@
-
 // event change status
 const btnchangeStatus = document.querySelectorAll('[data-status]');
 if (btnchangeStatus.length > 0) {
@@ -29,6 +28,30 @@ if (ListBtnDelete.length > 0) {
             formChangeDelete.submit();
         });
     });
+}
+
+// review img 
+const inputFile = document.querySelector('#thumbnail');
+if (inputFile) {
+    const img = document.querySelector('#preview');
+    const view = document.querySelector('#view');
+    const btnRomove = document.querySelector('[btn-remove]');
+    inputFile.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const src = URL.createObjectURL(file);
+            img.src = src;
+            view.classList.remove('d-none')
+        }
+    });
+    if (btnRomove) {
+        btnRomove.addEventListener('click', (event) => {
+            event.preventDefault();
+            img.src = '#';
+            inputFile.value = '';
+            view.classList.add('d-none');
+        })
+    }
 }
 
 
