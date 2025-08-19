@@ -2,11 +2,11 @@ mixin notification(messages, time)
     //- Thông báo thành công
     if(messages.success)
         .notification.notification-success#successBox.show
-            span ✅ #{messages.success} | 
+            span + #{messages.success} | 
             button(class='close-btn' btn-notification data-time=time) ×
 
     //- Thông báo lỗi
     if(messages.error)
-        .notification.notification-error#errorBox
-            span ✅ #{messages.error} | 
+        .notification.notification-error#errorBox.show
+            span - #{messages.error} | 
             button.close-btn(class='close-btn' btn-notification data-time=time) ×

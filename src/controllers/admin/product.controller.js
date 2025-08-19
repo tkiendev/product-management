@@ -236,7 +236,7 @@ module.exports.actionCreate = async (req, res) => {
     }
 };
 
-// [GET]: /admin/products/edit
+// [GET]: /admin/products/edit/:id
 module.exports.edit = async (req, res) => {
     try {
         if (req) {
@@ -257,7 +257,7 @@ module.exports.edit = async (req, res) => {
     }
 };
 
-// [POST]: /admin/products/edit
+// [POST]: /admin/products/edit/:id
 module.exports.actionEdit = async (req, res) => {
     try {
         if (req) {

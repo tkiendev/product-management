@@ -8,14 +8,16 @@ const multer = require('multer');
 const storageHepler = require('../../helpers/storage.js');
 const upload = multer({ storage: storageHepler.storage });
 
+// validation
+const validation = require('../../validation/create.validation.js');
+
 route.patch('/change-status/:status/:id', productController.changeStatus);
 route.delete('/change-delete/:id', productController.changeDelete);
 route.patch('/change-multi', productController.changeMulti);
 route.get('/create', productController.create);
-route.post('/create', upload.single('thumbnail'), productController.actionCreate);
+route.post('/create', upload.single('thumbnail'), validation.create, productController.actionCreate);
 route.get('/edit/:id', productController.edit);
-route.post('/edit/:id', upload.single('thumbnail'), productController.actionEdit);
-
+route.post('/edit/:id', upload.single('thumbnail'), validation.create, productController.actionEdit);
 
 route.get('/', productController.index);
 
