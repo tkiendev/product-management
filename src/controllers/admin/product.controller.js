@@ -236,3 +236,48 @@ module.exports.actionCreate = async (req, res) => {
     }
 };
 
+// [GET]: /admin/products/edit
+module.exports.edit = async (req, res) => {
+    try {
+        if (req) {
+            if (req.params.id) {
+                const product = await producModel.findOne({ _id: req.params.id });
+                res.render('admin/pages/product/edit.pug', {
+                    titlePage: 'Sửa sản phẩm',
+                    product: product
+                });
+            } else {
+                req.flash('error', 'Tải lên sản phẩm thất bại');
+                const previousUrl = '/admin/products';
+                res.redirect(previousUrl);
+            }
+        }
+    } catch (error) {
+        req.flash('error', 'Cập nhật không thành công');
+    }
+};
+
+// [POST]: /admin/products/edit
+module.exports.actionEdit = async (req, res) => {
+    try {
+        if (req) {
+            const port = process.env.PORT || 3001;
+
+            const product = req.body;
+            product.position = parseInt(req.body.position);
+            product.price = parseInt(product.price);
+            product.discountPercentage = parseInt(product.discountPercentage);
+            product.stock = parseInt(product.stock);
+            product.thumbnail = `http://localhost:${port}/uploads/${req.file.filename}`;
+
+            await producModel.updateOne({ _id: req.params.id }, product);
+
+            req.flash('success', 'cập nhật sản phẩm thành công');
+            const previousUrl = req.get('Referer') || '/';
+            res.redirect(previousUrl);
+
+        }
+    } catch (error) {
+        req.flash('error', 'Cập nhật không thành công');
+    }
+};

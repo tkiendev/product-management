@@ -13,6 +13,9 @@ route.delete('/change-delete/:id', productController.changeDelete);
 route.patch('/change-multi', productController.changeMulti);
 route.get('/create', productController.create);
 route.post('/create', upload.single('thumbnail'), productController.actionCreate);
+route.get('/edit/:id', productController.edit);
+route.post('/edit/:id', upload.single('thumbnail'), productController.actionEdit);
+
 
 route.get('/', productController.index);
 

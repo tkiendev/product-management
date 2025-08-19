@@ -8,5 +8,5 @@ mixin notification(messages, time)
     //- Thông báo lỗi
     if(messages.error)
         .notification.notification-error#errorBox
-            span ✅ cập nhật không thành công | 
+            span ✅ #{messages.error} | 
             button.close-btn(class='close-btn' btn-notification data-time=time) ×
