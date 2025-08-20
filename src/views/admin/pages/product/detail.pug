@@ -1,0 +1,59 @@
+extends ../../layouts/default.pug
+
+block main  
+    style.
+      .product-thumbnail {
+        max-width: 200px;
+        height: auto;
+      }
+      .label {
+        font-weight: bold;
+      }
+    if(product)
+        .card.mb-3
+            .card-header.mt-2 
+                .row
+                    .col-11
+                        if(product.title)
+                            h4 #{product.title}
+                    .col-1
+                        a(href = `${prefixAdmin}/products` class='btn btn-sm btn-outline-danger') x
+            .card-body
+                .row.mb-3
+                    .col-md-3.label Tiêu đề:
+                    .col-md-9 #{product.title}
+                .row.mb-3
+                    .col-md-3.label Mô tả:
+                    .col-md-9 #{product.description}
+                .row.mb-3
+                    .col-md-3.label Giá:
+                    .col-md-9 #{product.price}
+                .row.mb-3
+                    .col-md-3.label Giảm giá (%):
+                    .col-md-9 #{product.discountPercentage}
+                .row.mb-3
+                    .col-md-3.label Tồn kho:
+                    .col-md-9 #{product.stock}
+                .row.mb-3
+                    .col-md-3.label Ảnh đại diện:
+                    .col-md-9
+                        img.product-thumbnail(src=product.thumbnail, alt="Thumbnail")
+                .row.mb-3
+                    .col-md-3.label Trạng thái:
+                    .col-md-9 
+                        if(product.status === 'active')
+                            span.badge.badge-success Hoạt động
+                        if(product.status === 'inactive')
+                            span.badge.badge-danger Dừng hoạt động
+                .row.mb-3
+                    .col-md-3.label Vị trí hiển thị:
+                    .col-md-9 #{product.position}
+                .row.mb-3
+                    if(product.createdAt)
+                        .col-md-3.label Cập nhật lúc:
+                        .col-md-9 #{product.createdAt}
+                    if(product.updatedAt)
+                        .col-md-3.label Cập nhật lúc:
+                        .col-md-9 #{product.updatedAt}
+                .edit-product
+                    a(href =`${prefixAdmin}/products/edit/${product.id}` class = `btn btn-warning btn-sm`) Sửa

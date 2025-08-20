@@ -7,6 +7,7 @@ const filterStatusHelper = require('../../helpers/filterStatus.js');
 const seachHelper = require('../../helpers/seach.js');
 const paginationPageHelper = require('../../helpers/paginationPage.js');
 const system = require('../../config/systems.js');
+const products = require('../../models/product.model.js');
 
 // [GET]: /admin/products
 module.exports.index = async (req, res) => {
@@ -294,6 +295,22 @@ module.exports.actionEdit = async (req, res) => {
             const previousUrl = req.get('Referer') || '/';
             res.redirect(previousUrl);
 
+        }
+    } catch (error) {
+        req.flash('error', 'Sản phẩm không tồn tại');
+        res.redirect(`${system.prefixAdmin}/products`);
+    }
+};
+
+// [POST]: /admin/products/detail/:id
+module.exports.detail = async (req, res) => {
+    try {
+        if (req) {
+            const product = await producModel.findById({ _id: req.params.id });
+            res.render('admin/pages/product/detail.pug', {
+                titlePage: 'Chi tiết sản phẩm',
+                product: product
+            });
         }
     } catch (error) {
         req.flash('error', 'Sản phẩm không tồn tại');

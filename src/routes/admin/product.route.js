@@ -14,10 +14,14 @@ const validation = require('../../validation/create.validation.js');
 route.patch('/change-status/:status/:id', productController.changeStatus);
 route.delete('/change-delete/:id', productController.changeDelete);
 route.patch('/change-multi', productController.changeMulti);
+
 route.get('/create', productController.create);
 route.post('/create', upload.single('thumbnail'), validation.create, productController.actionCreate);
+
 route.get('/edit/:id', productController.edit);
 route.post('/edit/:id', upload.single('thumbnail'), validation.create, productController.actionEdit);
+
+route.get('/detail/:id', productController.detail);
 
 route.get('/', productController.index);
 
