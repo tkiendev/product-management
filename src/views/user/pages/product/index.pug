@@ -6,15 +6,16 @@ block main
 
   .row
     each product in products
-      .product-box
-        img.product-image(src=`${product.thumbnail}`, alt=`${product.title}`)
-        .product-info
-          h3 #{product.title}
-          .prices
-            span.old-price #{product.stringPrice}đ
-            span.sale-price #{product.stringNewPrice}đ
-            span.discount Giảm #{product.discountPercentage}%
-          button(type="button") Mua Ngay
+      a(href=`products/detail/${product.slug != '' ? product.slug : product.id}`) 
+        .product-box
+          img.product-image(src=`${product.thumbnail}`, alt=`${product.title}`)
+          .product-info
+            h3 #{product.title}
+            .prices
+              span.old-price #{product.stringPrice}đ
+              span.sale-price #{product.stringNewPrice}đ
+              span.discount Giảm #{product.discountPercentage}%
+            button(type="button") Mua Ngay
 
     
   

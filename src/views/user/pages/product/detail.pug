@@ -1,0 +1,41 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+block main 
+    style.
+      .product-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+      .price {
+        font-size: 1.5rem;
+        color: #e74c3c;
+        font-weight: bold;
+      }
+      .discount {
+        font-size: 1rem;
+        color: #f5f533ff;
+      }
+      .stock {
+        font-size: 1rem;
+        color: #d9d62dff;
+      }
+
+    .container
+        +box-head(titleHead)
+    .container.mt-5
+        .row
+            .col-md-6
+                img.product-image(src=`${product.thumbnail}`, alt="Ảnh sản phẩm")
+            .col-md-6
+                h2 #{product.title}
+                p #{product.description}
+                p.price #{product.stringNewPrice}
+                p.discount #{product.discountPercentage}%
+                p.stock Tồn kho: #{product.stock} sản phẩm
+                .row 
+                    .col-6
+                        button.btn.btn-primary.mt-3 Thêm vào giỏ hàng
+                    .col-6
+                        button.btn.btn-primary.mt-3 Mua ngay
+

@@ -75,6 +75,7 @@ body {
 
 .product-box:hover {
     background: linear-gradient(to right, rgb(232, 220, 232), white);
+    cursor: pointer;
 }
 
 .product-image {
