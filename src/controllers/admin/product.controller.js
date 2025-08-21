@@ -221,26 +221,19 @@ module.exports.create = async (req, res) => {
 // [POST]: /admin/products/create
 module.exports.actionCreate = async (req, res) => {
     try {
-        if (req) {
-            console.log(req.body);
-            const port = process.env.PORT || 3001;
+        if (req.body) {
 
             const product = req.body;
             product.position = parseInt((await producModel.countDocuments({ deleted: false })) + 1);
             product.price = parseInt(product.price);
             product.discountPercentage = parseInt(product.discountPercentage);
             product.stock = parseInt(product.stock);
-            if (req.file) {
-                product.thumbnail = `http://localhost:${port}/uploads/${req.file.filename}`;
-                await (new producModel(product)).save();
-                req.flash('success', 'Tạo sản phẩm thành công');
 
-                const previousUrl = `${system.prefixAdmin}/products`;
-                res.redirect(previousUrl);
-            } else {
-                req.flash('error', 'Bạn cần thêm ảnh vào!');
-                res.redirect(`${system.prefixAdmin}/products`);
-            }
+            await (new producModel(product)).save();
+            req.flash('success', 'Tạo sản phẩm thành công');
+
+            const previousUrl = `${system.prefixAdmin}/products`;
+            res.redirect(previousUrl);
 
         }
     } catch (error) {
@@ -253,9 +246,7 @@ module.exports.actionCreate = async (req, res) => {
 module.exports.edit = async (req, res) => {
     try {
         if (req) {
-            console.log(req.params.id);
             const checkId = await producModel.findById(req.params.id);
-            console.log(checkId);
             if (checkId) {
                 const product = await producModel.findById(req.params.id);
                 res.render('admin/pages/product/edit.pug', {
@@ -277,8 +268,7 @@ module.exports.edit = async (req, res) => {
 // [POST]: /admin/products/edit/:id
 module.exports.actionEdit = async (req, res) => {
     try {
-        if (req.body) {
-            const port = process.env.PORT || 3001;
+        if (req.params.id && req.body) {
 
             const product = req.body;
             product.position = parseInt(req.body.position);
@@ -286,9 +276,6 @@ module.exports.actionEdit = async (req, res) => {
             product.discountPercentage = parseInt(product.discountPercentage);
             product.stock = parseInt(product.stock);
 
-            if (req.file) {
-                product.thumbnail = `http://localhost:${port}/uploads/${req.file.filename}`;
-            }
             await producModel.updateOne({ _id: req.params.id }, product);
 
             req.flash('success', 'cập nhật sản phẩm thành công');

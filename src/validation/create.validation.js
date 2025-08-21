@@ -1,13 +1,17 @@
 module.exports.create = (req, res, next) => {
-    if (req) {
-        if (req.body.title === '') {
-            req.flash('error', 'vui lòng nhập tên sản phẩm');
+    if (req.body) {
+        if (!req.body.title) {
+            req.flash('error', 'Vui lòng nhập tên sản phẩm');
             const previousUrl = req.get('Referer') || '/';
             res.redirect(previousUrl);
             return;
+        } else {
+            next();
         }
     } else {
-        res.redirect('/admin/products');
+        req.flash('error', 'Tạo lỗi vui lòng kiểm tra các trường');
+        const previousUrl = req.get('Referer') || '/';
+        res.redirect(previousUrl);
+        return;
     }
-    next();
 }

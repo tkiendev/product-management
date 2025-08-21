@@ -5,21 +5,41 @@ const productController = require('../../controllers/admin/product.controller.js
 
 // upload file
 const multer = require('multer');
-const storageHepler = require('../../helpers/storage.js');
-const upload = multer({ storage: storageHepler.storage });
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 
 // validation
 const validation = require('../../validation/create.validation.js');
+
+// upload file to cloudinary
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name: 'ddrpvy5qu',
+    api_key: '968846112279568',
+    api_secret: 'hkOlPi1fA-g-sdTNKrwHDVqUi34'
+});
+const uploadCloudinary = require('../../middlewares/uploadCloudinary.middleware.js')
 
 route.patch('/change-status/:status/:id', productController.changeStatus);
 route.delete('/change-delete/:id', productController.changeDelete);
 route.patch('/change-multi', productController.changeMulti);
 
 route.get('/create', productController.create);
-route.post('/create', upload.single('thumbnail'), validation.create, productController.actionCreate);
+route.post('/create',
+    upload.single('thumbnail'),
+    validation.create,
+    uploadCloudinary.upload,
+    productController.actionCreate
+);
 
 route.get('/edit/:id', productController.edit);
-route.post('/edit/:id', upload.single('thumbnail'), validation.create, productController.actionEdit);
+route.post('/edit/:id',
+    upload.single('thumbnail'),
+    validation.create,
+    uploadCloudinary.upload,
+    productController.actionEdit
+);
 
 route.get('/detail/:id', productController.detail);
 
