@@ -13,12 +13,6 @@ const upload = multer({ storage: storage });
 const validation = require('../../validation/create.validation.js');
 
 // upload file to cloudinary
-const cloudinary = require('cloudinary').v2;
-cloudinary.config({
-    cloud_name: 'ddrpvy5qu',
-    api_key: '968846112279568',
-    api_secret: 'hkOlPi1fA-g-sdTNKrwHDVqUi34'
-});
 const uploadCloudinary = require('../../middlewares/uploadCloudinary.middleware.js')
 
 route.patch('/change-status/:status/:id', productController.changeStatus);
