@@ -17,6 +17,13 @@ module.exports.index = async (req, res) => {
         };
         const query = req.query;
 
+        // value sort
+        const sort = {}
+        if (req.query.keywordSort && req.query.valueSort) {
+            sort[req.query.keywordSort] = req.query.valueSort;
+        } else {
+            sort.position = 1;
+        }
         // value option 
         let listOption = [
             {
@@ -78,7 +85,7 @@ module.exports.index = async (req, res) => {
         paginationPage = await paginationPageHelper(paginationPage, query, await producModel.countDocuments({ ...find, deleted: false }));
 
         // call DB
-        const products = await producModel.find(find).sort({ position: 1 }).skip((paginationPage.currentPage - 1) * paginationPage.limited).limit(paginationPage.limited);
+        const products = await producModel.find(find).sort(sort).skip((paginationPage.currentPage - 1) * paginationPage.limited).limit(paginationPage.limited);
 
         // formatt price
         products.forEach((product, index, products) => {
