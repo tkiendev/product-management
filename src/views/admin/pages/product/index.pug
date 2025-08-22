@@ -4,8 +4,7 @@ include ../../mixins/formSreach.pug
 include ../../mixins/pagination.pug
 include ../../mixins/formChangeMulti.pug
 include ../../mixins/notification.pug
-
-
+include ../../mixins/sort.pug
 
 block main    
     + notification(messages, 5000)
@@ -35,13 +34,7 @@ block main
                 .col-6 
                     .row
                         .col-10
-                            select(name="sortOption" class='form-control')
-                                option(value="position-asc") Theo vị trí tăng dần
-                                option(value="position-desc") Theo vị trí giảm dần
-                                option(value="price-asc") Theo giá tăng dần
-                                option(value="price-desc") Theo giá giảm dần
-                                option(value="name-asc") Theo tên từ A → Z
-                                option(value="name-desc") Theo tên từ Z → A
+                            + sort()
                         button(class="btn btn-danger btn-sm ml-1" btn-clear) Clear
 
             table(class='table table-hover table-sm' table-check)
