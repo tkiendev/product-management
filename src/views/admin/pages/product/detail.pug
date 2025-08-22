@@ -24,7 +24,7 @@ block main
                     .col-md-9 #{product.title}
                 .row.mb-3
                     .col-md-3.label Mô tả:
-                    .col-md-9 #{product.description}
+                    .col-md-9!= product.description
                 .row.mb-3
                     .col-md-3.label Giá:
                     .col-md-9 #{product.price}
@@ -50,7 +50,7 @@ block main
                     .col-md-9 #{product.position}
                 .row.mb-3
                     if(product.createdAt)
-                        .col-md-3.label Cập nhật lúc:
+                        .col-md-3.label Tạo vào lúc:
                         .col-md-9 #{product.createdAt}
                     if(product.updatedAt)
                         .col-md-3.label Cập nhật lúc:

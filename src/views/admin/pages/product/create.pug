@@ -13,7 +13,7 @@ block main
                     input(type='text' name='title' id='title' class='form-control')
                 div(class='form-group')
                     label(for='desc') Mô tả
-                    textarea(name='discription' id='desc' class='form-control' rows='5')
+                    textarea(name='description' id='textarea-tinyMCE' class='form-control' rows='5')
                 div(class='form-group')
                     label(for='price') Giá
                     input(type='number' name='price' id='price' class='form-control' value=0)
@@ -41,5 +41,4 @@ block main
                     input(type='radio' name='status' id='statusInactive' class='form-check-input' value='inactive') 
                     lable(for='statusInactive' class='form-check-lable') Dừng hoạt động
                 button(type="submit" class='btn btn-primary d-block') thêm mới 
-    
     <script src="/admin/js/eventProduct.js"></script>

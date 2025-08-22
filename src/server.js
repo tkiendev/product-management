@@ -24,6 +24,11 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded()); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
 
+// TinyMCE
+app.use('/tinymce', express.static(path.join(__dirname, '..', 'node_modules', 'tinymce')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
+
+
 // App locals Variables
 const systemConfig = require('./config/systems');
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
@@ -31,6 +36,7 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin;
 require('dotenv').config();
 const port = process.env.PORT || 3001;
 
+// public static file
 app.use(express.static(path.join(__dirname, '../', 'public')));
 
 // view engine

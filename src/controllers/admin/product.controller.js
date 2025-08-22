@@ -229,7 +229,6 @@ module.exports.create = async (req, res) => {
 module.exports.actionCreate = async (req, res) => {
     try {
         if (req.body) {
-
             const product = req.body;
             product.position = parseInt((await producModel.countDocuments({ deleted: false })) + 1);
             product.price = parseInt(product.price);
