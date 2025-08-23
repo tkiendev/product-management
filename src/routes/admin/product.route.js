@@ -13,7 +13,7 @@ const upload = multer({ storage: storage });
 const validation = require('../../validation/create.validation.js');
 
 // upload file to cloudinary
-const uploadCloudinary = require('../../middlewares/uploadCloudinary.middleware.js')
+const uploadCloudinary = require('../../middlewares/uploadCloudinary.middleware.js');
 
 route.patch('/change-status/:status/:id', productController.changeStatus);
 route.delete('/change-delete/:id', productController.changeDelete);
