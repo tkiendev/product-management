@@ -1,11 +1,42 @@
 const productCategoryModel = require('../../models/product-category.model.js');
+function buildRobustTree(flatList) {
+    const nodeMap = new Map();
+
+    // Bước 1: Chuẩn hóa dữ liệu và tạo node với children
+    flatList.forEach(item => {
+        const id = item._id.toString();
+        nodeMap.set(id, { ...item, children: [] });
+    });
+
+    const tree = [];
+
+    // Bước 2: Gắn phần tử con vào phần tử cha
+    flatList.forEach(item => {
+        const id = item._id.toString();
+        const parent_id = item.parent_id?.toString();
+
+        if (parent_id && nodeMap.has(parent_id)) {
+            nodeMap.get(parent_id).children.push(nodeMap.get(id));
+        } else {
+            // Nếu không có cha hoặc cha không tồn tại => là gốc
+            tree.push(nodeMap.get(id));
+        }
+    });
+
+    return tree;
+}
 
 // [GET] admin/product-category
 module.exports.index = async (req, res) => {
     try {
         let productCategory = await productCategoryModel.find({ deleted: false });
+        productCategory = productCategory.map((item) => {
+            return item._doc;
+        });
+        const newProductCategory = buildRobustTree(productCategory);
+
         res.render('admin/pages/product-category/index.pug', {
-            productCategory: productCategory
+            productCategory: newProductCategory
         });
     } catch {
         req.flash('error', 'cập nhật danh mục thất bại');
@@ -16,19 +47,20 @@ module.exports.index = async (req, res) => {
 
 // [GET] admin/product-category/create
 module.exports.create = async (req, res) => {
-    // function treeCategory(productCategory) {
-    //     let treeCategory = []
-    //     productCategory.forEach((item) => {
 
-    //     });
-    // }
     try {
         let productCategory = await productCategoryModel.find({ deleted: false });
+        productCategory = productCategory.map((item) => {
+            return item._doc;
+        });
+        const newProductCategory = buildRobustTree(productCategory);
+
         res.render('admin/pages/product-category/create.pug', {
-            productCategory: productCategory
+            productCategory: newProductCategory
         });
     } catch (error) {
-        req.flash('success', 'tải trang thất bại')
+        console.log(error);
+        req.flash('error', 'tải trang thất bại');
         res.redirect('/admin/product-category');
     }
 }

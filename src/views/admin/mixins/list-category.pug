@@ -1,0 +1,29 @@
+mixin list-category(productCategory, lv = 1, index)
+    - var underline = (new Array(lv)).join("___")
+    each item in productCategory
+        - if(item)
+            tr
+                td
+                    input(type='checkbox' name='id' check-box value=item.id)
+                td #{index.count++ + 1}
+                td 
+                    img(
+                        src=`${item.thumbnail}`
+                        alt=`${item.title}`
+                        width=`100px`
+                        height=`auto`
+                    )
+                td #{underline +  '|' } #{item.title}
+                td
+                    input(type='number' value=item.position style="width: 6ch" input-position)
+                td 
+                    if (item.status === 'active')
+                        a(href="" class = `badge badge-success` data-status=item.status id=item.id) Hoạt Động
+                    else 
+                        a(href="" class = `badge badge-danger`  data-status=item.status id=item.id) Dừng hoạt Động
+                td 
+                    a(href =`${prefixAdmin}/products/edit/${item.id}` class = `btn btn-warning btn-sm`) Sửa
+                    button(class = `btn btn-danger btn-sm ml-1` btn-delete id=item.id) Xóa
+                    a(href =`${prefixAdmin}/products/detail/${item.id}` class = `btn btn-secondary btn-sm ml-1`) Chi tiết 
+        - if(item.children && item.children.length > 0)
+            + list-category(item.children, lv + 1, index)

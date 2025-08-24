@@ -1,0 +1,6 @@
+mixin category(productCategory, lv = 1)
+    - var underline = (new Array(lv)).join('__|');
+    each item in productCategory
+      option(value=item._id) #{underline} #{item.title}
+      - if(item.children && item.children.length > 0)
+        +category(item.children, lv + 1)

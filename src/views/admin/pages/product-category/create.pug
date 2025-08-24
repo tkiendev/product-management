@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/notification.pug
+include ../../mixins/category.pug
 
 block main  
     + notification(messages, 5000)
@@ -12,8 +13,12 @@ block main
                     label(for='title') Tên Danh mục
                     input(type='text' name='title' id='title' class='form-control')
                 div(class='form-group')
-                    label(for='parent_id') Danh mục Thuộc 
-                    input(name='parent_id' id='parent_id' class='form-control' value = '')
+                    label(for='parent_id') Chọn Danh mục
+                    .row 
+                        .col-4
+                            select(name="parent_id" class='form-control' id='parent_id')
+                                option(value="") --- Chọn danh mục cha ---
+                                + category(productCategory)
                 div(class='form-group')
                     label(for='desc') Mô tả
                     textarea(name='description' id='textarea-tinyMCE' class='form-control' rows='5')
