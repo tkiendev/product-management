@@ -1,0 +1,56 @@
+extends ../../layouts/default.pug
+
+block main  
+    style.
+      .product-thumbnail {
+        max-width: 200px;
+        height: auto;
+      }
+      .label {
+        font-weight: bold;
+      }
+    - if(category)
+        .card.mb-3
+            .card-header.mt-2 
+                .row
+                    .col-11
+                        if(category.title)
+                            h4 #{category.title}
+                    .col-1
+                        a(href = `${prefixAdmin}/product-category` class='btn btn-sm btn-outline-danger') x
+            .card-body
+                .row.mb-3
+                    .col-md-3.label Tiêu đề:
+                    .col-md-9 #{category.title}
+                .row.mb-3
+                    .col-md-3.label Mô tả:
+                    .col-md-9!= category.description
+                .row.mb-3
+                    .col-md-3.label Danh mục cha:
+                    - if(typeof parentCategory == 'string')
+                        .col-md-9!= parentCategory
+                    - else
+                        .col-md-9!= parentCategory.title
+                .row.mb-3
+                    .col-md-3.label Ảnh đại diện:
+                    .col-md-9
+                        img.product-thumbnail(src=category.thumbnail, alt="Thumbnail")
+                .row.mb-3
+                    .col-md-3.label Trạng thái:
+                    .col-md-9 
+                        if(category.status === 'active')
+                            span.badge.badge-success Hoạt động
+                        if(category.status === 'inactive')
+                            span.badge.badge-danger Dừng hoạt động
+                .row.mb-3
+                    .col-md-3.label Vị trí hiển thị:
+                    .col-md-9 #{category.position}
+                .row.mb-3
+                    if(category.createdAt)
+                        .col-md-3.label Tạo vào lúc:
+                        .col-md-9 #{category.createdAt}
+                    if(category.updatedAt)
+                        .col-md-3.label Cập nhật lúc:
+                        .col-md-9 #{category.updatedAt}
+                .edit-product
+                    a(href =`${prefixAdmin}/products/edit/${category.id}` class = `btn btn-warning btn-sm`) Sửa

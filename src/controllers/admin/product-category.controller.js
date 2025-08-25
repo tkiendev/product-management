@@ -10,6 +10,7 @@ module.exports.index = async (req, res) => {
         });
         const newProductCategory = buildRobustTree(productCategory);
         res.render('admin/pages/product-category/index.pug', {
+            titlePage: 'Quản lý danh mục',
             productCategory: newProductCategory
         });
     } catch {
@@ -60,6 +61,34 @@ module.exports.actionCreate = async (req, res) => {
         }
     } catch (error) {
         req.flash('error', 'Tạo mới danh mục thất bại');
+        const previousUrl = req.get('Referer') || '/';
+        res.redirect(previousUrl);
+    }
+}
+
+// [GET] admin/product-category/detail/:id
+module.exports.detail = async (req, res) => {
+    try {
+        if (req.params.id) {
+            const category = await productCategoryModel.findById(req.params.id);
+            let parentCategory;
+            if (category.parent_id == '') {
+                parentCategory = 'Không có danh mục cha';
+            } else {
+                parentCategory = await productCategoryModel.findById(category.parent_id);
+            }
+            res.render('admin/pages/product-category/detail', {
+                titlePage: 'Chỉnh sửa danh mục',
+                category: category,
+                parentCategory: parentCategory
+            });
+        } else {
+            req.flash('error', 'Không tìm thấy danh mục');
+            const previousUrl = req.get('Referer') || '/';
+            res.redirect(previousUrl);
+        }
+    } catch (error) {
+        req.flash('error', 'Tải lên danh mục thất bại');
         const previousUrl = req.get('Referer') || '/';
         res.redirect(previousUrl);
     }

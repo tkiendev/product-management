@@ -22,8 +22,8 @@ mixin list-category(productCategory, lv = 1, index)
                     else 
                         a(href="" class = `badge badge-danger`  data-status=item.status id=item.id) Dừng hoạt Động
                 td 
-                    a(href =`${prefixAdmin}/products/edit/${item.id}` class = `btn btn-warning btn-sm`) Sửa
+                    a(href =`${prefixAdmin}/product-category/edit/${item._id}` class = `btn btn-warning btn-sm`) Sửa
                     button(class = `btn btn-danger btn-sm ml-1` btn-delete id=item.id) Xóa
-                    a(href =`${prefixAdmin}/products/detail/${item.id}` class = `btn btn-secondary btn-sm ml-1`) Chi tiết 
+                    a(href =`${prefixAdmin}/product-category/detail/${item._id}` class = `btn btn-secondary btn-sm ml-1`) Chi tiết 
         - if(item.children && item.children.length > 0)
             + list-category(item.children, lv + 1, index)

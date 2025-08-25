@@ -16,4 +16,7 @@ route.get('/', productCategoryController.index);
 route.get('/create', productCategoryController.create);
 route.post('/create', upload.single('thumbnail'), uploadCloudinary.upload, productCategoryController.actionCreate);
 
+route.get('/detail/:id', productCategoryController.detail);
+
+
 module.exports = route;
