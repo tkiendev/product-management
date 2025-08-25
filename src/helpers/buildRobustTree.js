@@ -1,6 +1,5 @@
-module.exports.buildRobustTree = (flatList) => {
+module.exports = (flatList = []) => {
     const nodeMap = new Map();
-
     // Bước 1: Chuẩn hóa dữ liệu và tạo node với children
     flatList.forEach(item => {
         const id = item._id.toString();
@@ -8,7 +7,6 @@ module.exports.buildRobustTree = (flatList) => {
     });
 
     const tree = [];
-
     // Bước 2: Gắn phần tử con vào phần tử cha
     flatList.forEach(item => {
         const id = item._id.toString();

@@ -13,6 +13,6 @@ const uploadCloudinary = require('../../middlewares/uploadCloudinary.middleware.
 
 route.get('/', productCategoryController.index);
 route.get('/create', productCategoryController.create);
-route.post('/create', upload.single('thumbnail'), productCategoryController.actionCreate);
+route.post('/create', upload.single('thumbnail'), uploadCloudinary.upload, productCategoryController.actionCreate);
 
 module.exports = route;

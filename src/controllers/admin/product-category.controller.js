@@ -9,7 +9,6 @@ module.exports.index = async (req, res) => {
             return item._doc;
         });
         const newProductCategory = buildRobustTree(productCategory);
-
         res.render('admin/pages/product-category/index.pug', {
             productCategory: newProductCategory
         });
