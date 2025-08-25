@@ -63,5 +63,4 @@ module.exports.actionCreate = async (req, res) => {
         const previousUrl = req.get('Referer') || '/';
         res.redirect(previousUrl);
     }
-
 }

@@ -12,6 +12,7 @@ const upload = multer({ storage: storage });
 const uploadCloudinary = require('../../middlewares/uploadCloudinary.middleware.js');
 
 route.get('/', productCategoryController.index);
+
 route.get('/create', productCategoryController.create);
 route.post('/create', upload.single('thumbnail'), uploadCloudinary.upload, productCategoryController.actionCreate);
 

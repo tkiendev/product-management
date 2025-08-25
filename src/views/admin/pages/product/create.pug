@@ -12,6 +12,12 @@ block main
                     label(for='title') tên sản phẩm
                     input(type='text' name='title' id='title' class='form-control')
                 div(class='form-group')
+                    label(for='category') Chọn danh mục 
+                    select(name='category_id' class='form-control')
+                        option(value="" selected) -- Danh mục -- 
+                        each item in productCategory
+                            option(value=item.id) #{item.title}               
+                div(class='form-group')
                     label(for='desc') Mô tả
                     textarea(name='description' id='textarea-tinyMCE' class='form-control' rows='5')
                 div(class='form-group')

@@ -1,5 +1,6 @@
 // Model
 const producModel = require('../../models/product.model.js');
+const productCategoryModel = require('../../models/product-category.model.js');
 
 // helper
 const formattPriceHelper = require('../../helpers/formattPrice.js');
@@ -7,7 +8,7 @@ const filterStatusHelper = require('../../helpers/filterStatus.js');
 const seachHelper = require('../../helpers/seach.js');
 const paginationPageHelper = require('../../helpers/paginationPage.js');
 const system = require('../../config/systems.js');
-const products = require('../../models/product.model.js');
+const buildRobustTree = require('../../helpers/buildRobustTree.js');
 
 // [GET]: /admin/products
 module.exports.index = async (req, res) => {
@@ -216,8 +217,10 @@ module.exports.changeDelete = async (req, res) => {
 // [GET]: /admin/products/create
 module.exports.create = async (req, res) => {
     try {
+        let productCategory = await productCategoryModel.find({ deleted: false });
         res.render('admin/pages/product/create.pug', {
-            titlePage: 'Thêm mới sản phẩm'
+            titlePage: 'Thêm mới sản phẩm',
+            productCategory: productCategory
         });
     } catch (error) {
         req.flash('error', 'Cập nhật không thành công');
@@ -235,6 +238,7 @@ module.exports.actionCreate = async (req, res) => {
             product.discountPercentage = parseInt(product.discountPercentage);
             product.stock = parseInt(product.stock);
 
+            console.log(product);
             await (new producModel(product)).save();
             req.flash('success', 'Tạo sản phẩm thành công');
 
@@ -255,9 +259,19 @@ module.exports.edit = async (req, res) => {
             const checkId = await producModel.findById(req.params.id);
             if (checkId) {
                 const product = await producModel.findById(req.params.id);
+                const listProductCategory = await productCategoryModel.find({ deleted: false });
+
+                let category = listProductCategory.find(category => {
+                    return category.id === product.category_id ? category : false;
+                });
+                if (!category) {
+                    category = 'chưa có danh mục';
+                }
                 res.render('admin/pages/product/edit.pug', {
                     titlePage: 'Sửa sản phẩm',
-                    product: product
+                    product: product,
+                    listProductCategory: listProductCategory,
+                    category: category
                 });
             } else {
                 req.flash('error', 'Tải lên sản phẩm thất bại');
@@ -300,9 +314,17 @@ module.exports.detail = async (req, res) => {
     try {
         if (req) {
             const product = await producModel.findById({ _id: req.params.id });
+            let category = '';
+            if (product.category_id) {
+                const productCategory = await productCategoryModel.findById({ _id: product.category_id })
+                category = productCategory.title;
+            } else {
+                category = 'Chưa có danh mục'
+            }
             res.render('admin/pages/product/detail.pug', {
                 titlePage: 'Chi tiết sản phẩm',
-                product: product
+                product: product,
+                category: category
             });
         }
     } catch (error) {
