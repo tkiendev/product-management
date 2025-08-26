@@ -5,4 +5,7 @@ const permissionsGroupController = require('../../controllers/admin/permissions-
 
 route.get('/', permissionsGroupController.index);
 
+route.get('/create', permissionsGroupController.create);
+route.post('/create', permissionsGroupController.actionCreate);
+
 module.exports = route;

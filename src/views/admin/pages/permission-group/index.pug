@@ -8,7 +8,7 @@ block main
             .row
                 .col-8 sản phẩm nhóm phân quyền 
                 .col-2 
-                    a(href=`${prefixAdmin}/products/create` class='btn btn-sm ml-1 btn-outline-success') + Thêm sản phẩm 
+                    a(href=`${prefixAdmin}/permissions-group/create` class='btn btn-sm ml-1 btn-outline-success') + Thêm sản phẩm 
                 .col-2 
                     a(href="" class='btn btn-sm ml-1 btn-outline-danger') Thùng rác 
         .card-body
@@ -30,14 +30,13 @@ block main
                         th Trạng thái 
                         th Hoạt động
                     tbody
-                        each item, index  in permissionGroup
+                        each item, index  in permissionsGroup
                             - if(item)
                                 tr
                                     td
                                         input(type='checkbox' name='id' check-box value=item.id)
                                     td #{index + 1}
-                                    td
-                                        input(type='number' value=item.position style="width: 6ch" input-position)
+                                    td #{item.title}
                                     td 
                                         if (item.status === 'active')
                                             a(href="" class = `badge badge-success` data-status=item.status id=item.id) Hoạt Động
@@ -47,7 +46,6 @@ block main
                                         a(href =`${prefixAdmin}/products/edit/${item.id}` class = `btn btn-warning btn-sm`) Sửa
                                         button(class = `btn btn-danger btn-sm ml-1` btn-delete id=item.id) Xóa
                                         a(href =`${prefixAdmin}/products/detail/${item.id}` class = `btn btn-secondary btn-sm ml-1`) Chi tiết 
-
                             - else 
                                 span Không có sản phẩm nào
     
