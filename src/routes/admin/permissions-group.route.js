@@ -8,4 +8,8 @@ route.get('/', permissionsGroupController.index);
 route.get('/create', permissionsGroupController.create);
 route.post('/create', permissionsGroupController.actionCreate);
 
+route.get('/edit/:id', permissionsGroupController.edit);
+route.patch('/edit/:id', permissionsGroupController.actionEdit);
+
+
 module.exports = route;

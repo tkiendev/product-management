@@ -6,7 +6,8 @@ block main
     .card.mb-3
         .card-header
             .row
-                .col-8 sản phẩm nhóm phân quyền 
+                .col-8 
+                    h4 Nhóm phân quyền 
                 .col-2 
                     a(href=`${prefixAdmin}/permissions-group/create` class='btn btn-sm ml-1 btn-outline-success') + Thêm sản phẩm 
                 .col-2 
@@ -43,7 +44,7 @@ block main
                                         else 
                                             a(href="" class = `badge badge-danger`  data-status=item.status id=item.id) Dừng hoạt Động
                                     td 
-                                        a(href =`${prefixAdmin}/products/edit/${item.id}` class = `btn btn-warning btn-sm`) Sửa
+                                        a(href =`${prefixAdmin}/permissions-group/edit/${item.id}` class = `btn btn-warning btn-sm`) Sửa
                                         button(class = `btn btn-danger btn-sm ml-1` btn-delete id=item.id) Xóa
                                         a(href =`${prefixAdmin}/products/detail/${item.id}` class = `btn btn-secondary btn-sm ml-1`) Chi tiết 
                             - else 

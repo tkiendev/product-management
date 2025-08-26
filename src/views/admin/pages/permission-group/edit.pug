@@ -1,0 +1,24 @@
+extends ../../layouts/default.pug
+include ../../mixins/notification.pug
+
+block main  
+    + notification(messages, 5000)
+    .card.mb-3
+        .card-header
+            h4 #{permissionsGroup.title}
+        .card-body
+            form(action=`${prefixAdmin}/permissions-group/edit/${permissionsGroup.id}?_method=patch` method='POST' id='form-creatr-product')
+                div(class='form-group')
+                    label(for='title') tên sản phẩm
+                    input(type='text' name='title' id='title' class='form-control' value=permissionsGroup.title)         
+                div(class='form-group')
+                    label(for='desc') Mô tả
+                    textarea(name='description' id='textarea-tinyMCE' class='form-control' rows='5') #{permissionsGroup.description}
+                div(class='form-group form-check form-check-inline')
+                    input(type='radio' name='status' id='statusActive' class='form-check-input' value='active' checked = (permissionsGroup.status == 'active' ? true : false)) 
+                    lable(for='statusActive' class='form-check-lable') Hoạt động
+                div(class='form-group form-check form-check-inline')
+                    input(type='radio' name='status' id='statusInactive' class='form-check-input' value='inactive' checked = (permissionsGroup.status == 'inactive' ? true : false)) 
+                    lable(for='statusInactive' class='form-check-lable') Dừng hoạt động
+                button(type="submit" class='btn btn-primary d-block') Lưu
+    <script src="/admin/js/eventProduct.js"></script>
