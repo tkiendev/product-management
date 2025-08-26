@@ -11,5 +11,7 @@ route.post('/create', permissionsGroupController.actionCreate);
 route.get('/edit/:id', permissionsGroupController.edit);
 route.patch('/edit/:id', permissionsGroupController.actionEdit);
 
+route.get('/detail/:id', permissionsGroupController.detail);
+
 
 module.exports = route;

@@ -1,0 +1,42 @@
+extends ../../layouts/default.pug
+
+block main  
+    style.
+      .product-thumbnail {
+        max-width: 200px;
+        height: auto;
+      }
+      .label {
+        font-weight: bold;
+      }
+    - if(permissionsGroup)
+        .card.mb-3
+            .card-header.mt-2 
+                .row
+                    .col-11
+                        h4 #{permissionsGroup.title}
+                    .col-1
+                        a(href = `${prefixAdmin}/permissions-group` class='btn btn-sm btn-outline-danger') x
+            .card-body
+                .row.mb-3
+                    .col-md-3.label Tiêu đề:
+                    .col-md-9 #{permissionsGroup.title}
+                .row.mb-3
+                    .col-md-3.label Mô tả:
+                    .col-md-9!= permissionsGroup.description
+                .row.mb-3
+                    .col-md-3.label Trạng thái:
+                    .col-md-9 
+                        - if(permissionsGroup.status === 'active')
+                            span.badge.badge-success Hoạt động
+                        - if(permissionsGroup.status === 'inactive')
+                            span.badge.badge-danger Dừng hoạt động
+                .row.mb-3
+                    - if(permissionsGroup.createdAt)
+                        .col-md-3.label Tạo vào lúc:
+                        .col-md-9 #{permissionsGroup.createdAt}
+                    - if(permissionsGroup.updatedAt)
+                        .col-md-3.label Cập nhật lúc:
+                        .col-md-9 #{permissionsGroup.updatedAt}
+                .edit-product
+                    a(href =`${prefixAdmin}/permissions-group/edit/${permissionsGroup.id}` class = `btn btn-warning btn-sm`) Sửa

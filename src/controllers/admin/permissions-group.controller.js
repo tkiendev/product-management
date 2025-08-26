@@ -83,3 +83,24 @@ module.exports.actionEdit = async (req, res) => {
         }
     }
 }
+
+// [GET] /admin/permission-group/detail/:id
+module.exports.detail = async (req, res) => {
+    try {
+        if (req.params.id) {
+            const permissionsGroup = await permissionGroupModel.findById(req.params.id)
+            res.render('admin/pages/permission-group/detail.pug', {
+                titlePage: permissionsGroup.title,
+                permissionsGroup: permissionsGroup
+            });
+        } else {
+            req.flash('error', 'Tải lên sản phẩm thất bại')
+            const previousUrl = '/admin/permissions-group';
+            res.redirect(previousUrl);
+        }
+    } catch (error) {
+        req.flash('error', 'Tải lên sản phẩm thất bại')
+        const previousUrl = '/admin/permissions-group';
+        res.redirect(previousUrl);
+    }
+}
