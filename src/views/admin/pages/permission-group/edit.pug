@@ -9,7 +9,7 @@ block main
         .card-body
             form(action=`${prefixAdmin}/permissions-group/edit/${permissionsGroup.id}?_method=patch` method='POST' id='form-creatr-product')
                 div(class='form-group')
-                    label(for='title') tên sản phẩm
+                    label(for='title') Tên nhóm
                     input(type='text' name='title' id='title' class='form-control' value=permissionsGroup.title)         
                 div(class='form-group')
                     label(for='desc') Mô tả

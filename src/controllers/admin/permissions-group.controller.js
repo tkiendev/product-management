@@ -50,12 +50,12 @@ module.exports.edit = async (req, res) => {
                 permissionsGroup: permissionsGroup
             });
         } else {
-            req.flash('error', 'Tải lên sản phẩm thất bại')
+            req.flash('error', 'Tải nhóm lên thất bại')
             const previousUrl = '/admin/permissions-group';
             res.redirect(previousUrl);
         }
     } catch (error) {
-        req.flash('error', 'Tải lên sản phẩm thất bại')
+        req.flash('error', 'Tải nhóm lên thất bại')
         const previousUrl = '/admin/permissions-group';
         res.redirect(previousUrl);
     }
@@ -94,12 +94,12 @@ module.exports.detail = async (req, res) => {
                 permissionsGroup: permissionsGroup
             });
         } else {
-            req.flash('error', 'Tải lên sản phẩm thất bại')
+            req.flash('error', 'Tải lên nhóm thất bại')
             const previousUrl = '/admin/permissions-group';
             res.redirect(previousUrl);
         }
     } catch (error) {
-        req.flash('error', 'Tải lên sản phẩm thất bại')
+        req.flash('error', 'Tải lên nhóm thất bại')
         const previousUrl = '/admin/permissions-group';
         res.redirect(previousUrl);
     }
@@ -111,17 +111,17 @@ module.exports.delete = async (req, res) => {
         if (req.params.id) {
             await permissionGroupModel.updateOne({ _id: req.params.id }, { deleted: true });
 
-            req.flash('success', 'xóa thành công danh mục');
+            req.flash('success', 'xóa thành công nhóm');
 
             const previousUrl = req.get('Referer') || '/';
             res.redirect(previousUrl);
         } else {
-            req.flash('error', 'xóa danh mục thất bại')
+            req.flash('error', 'xóa nhóm thất bại')
             const previousUrl = '/admin/permissions-group';
             res.redirect(previousUrl);
         }
     } catch (error) {
-        req.flash('error', 'Tải lên danh mục thất bại')
+        req.flash('error', 'Tải nhóm lên thất bại')
         const previousUrl = '/admin/permissions-group';
         res.redirect(previousUrl);
     }
