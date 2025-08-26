@@ -13,5 +13,6 @@ route.patch('/edit/:id', permissionsGroupController.actionEdit);
 
 route.get('/detail/:id', permissionsGroupController.detail);
 
+route.delete('/change-delete/:id', permissionsGroupController.delete);
 
 module.exports = route;

@@ -2,7 +2,7 @@ const permissionGroupModel = require('../../models/permission-group.model.js')
 
 // [GET] /admin/permission-group
 module.exports.index = async (req, res) => {
-    const permissionsGroup = await permissionGroupModel.find();
+    const permissionsGroup = await permissionGroupModel.find({ deleted: false });
     res.render('admin/pages/permission-group/index.pug', {
         titlePage: 'Nhóm phần quyền',
         permissionsGroup: permissionsGroup
@@ -100,6 +100,28 @@ module.exports.detail = async (req, res) => {
         }
     } catch (error) {
         req.flash('error', 'Tải lên sản phẩm thất bại')
+        const previousUrl = '/admin/permissions-group';
+        res.redirect(previousUrl);
+    }
+}
+
+// [DELETE] /admin/permission-group/delete/:id
+module.exports.delete = async (req, res) => {
+    try {
+        if (req.params.id) {
+            await permissionGroupModel.updateOne({ _id: req.params.id }, { deleted: true });
+
+            req.flash('success', 'xóa thành công danh mục');
+
+            const previousUrl = req.get('Referer') || '/';
+            res.redirect(previousUrl);
+        } else {
+            req.flash('error', 'xóa danh mục thất bại')
+            const previousUrl = '/admin/permissions-group';
+            res.redirect(previousUrl);
+        }
+    } catch (error) {
+        req.flash('error', 'Tải lên danh mục thất bại')
         const previousUrl = '/admin/permissions-group';
         res.redirect(previousUrl);
     }
