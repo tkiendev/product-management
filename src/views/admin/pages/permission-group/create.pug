@@ -5,7 +5,13 @@ block main
     + notification(messages, 5000)
     .card.mb-3
         .card-header
-            h4 Thêm nhóm phân quyền
+            .row
+                .col-11
+                    .row
+                        h4 Thêm nhóm phân quyền
+                        a(href="" class='btn ml-2 btn-info') @
+                .col-1 
+                    a(href = `${prefixAdmin}/permissions-group` class='btn btn-sm btn-outline-danger') x
         .card-body
             form(action=`${prefixAdmin}/permissions-group/create` method='POST' id='form-creatr-product')
                 div(class='form-group')

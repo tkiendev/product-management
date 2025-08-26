@@ -14,7 +14,9 @@ block main
             .card-header.mt-2 
                 .row
                     .col-11
-                        h4 #{permissionsGroup.title}
+                        .row 
+                            h4 #{permissionsGroup.title}
+                            a(href="" class='btn ml-2 btn-info') @
                     .col-1
                         a(href = `${prefixAdmin}/permissions-group` class='btn btn-sm btn-outline-danger') x
             .card-body
