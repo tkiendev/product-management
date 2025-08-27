@@ -1,8 +1,8 @@
-const permissionGroupModel = require('../../models/permission-group.model.js')
+const roleModel = require('../../models/role.model.js')
 
 // [GET] /admin/permission-group
 module.exports.index = async (req, res) => {
-    const permissionsGroup = await permissionGroupModel.find({ deleted: false });
+    const permissionsGroup = await roleModel.find({ deleted: false });
     res.render('admin/pages/permission-group/index.pug', {
         titlePage: 'Nhóm phần quyền',
         permissionsGroup: permissionsGroup
@@ -20,7 +20,7 @@ module.exports.create = (req, res) => {
 module.exports.actionCreate = async (req, res) => {
     try {
         if (req.body) {
-            const permissionGroup = new permissionGroupModel(req.body);
+            const permissionGroup = new roleModel(req.body);
             await permissionGroup.save();
 
             req.flash('success', 'Tạo mới thành công');
@@ -44,7 +44,7 @@ module.exports.actionCreate = async (req, res) => {
 module.exports.edit = async (req, res) => {
     try {
         if (req.params.id) {
-            const permissionsGroup = await permissionGroupModel.findById(req.params.id)
+            const permissionsGroup = await roleModel.findById(req.params.id)
             res.render('admin/pages/permission-group/edit.pug', {
                 titlePage: 'Chỉnh sửa nhóm phần quyền',
                 permissionsGroup: permissionsGroup
@@ -65,7 +65,7 @@ module.exports.edit = async (req, res) => {
 module.exports.actionEdit = async (req, res) => {
     try {
         if (req.params.id && req.body) {
-            await permissionGroupModel.updateOne({ _id: req.params.id }, req.body)
+            await roleModel.updateOne({ _id: req.params.id }, req.body)
 
             req.flash('success', 'Cập nhật mới thành công');
             const previousUrl = '/admin/permissions-group';
@@ -88,7 +88,7 @@ module.exports.actionEdit = async (req, res) => {
 module.exports.detail = async (req, res) => {
     try {
         if (req.params.id) {
-            const permissionsGroup = await permissionGroupModel.findById(req.params.id)
+            const permissionsGroup = await roleModel.findById(req.params.id)
             res.render('admin/pages/permission-group/detail.pug', {
                 titlePage: permissionsGroup.title,
                 permissionsGroup: permissionsGroup
@@ -109,7 +109,7 @@ module.exports.detail = async (req, res) => {
 module.exports.delete = async (req, res) => {
     try {
         if (req.params.id) {
-            await permissionGroupModel.updateOne({ _id: req.params.id }, { deleted: true });
+            await roleModel.updateOne({ _id: req.params.id }, { deleted: true });
 
             req.flash('success', 'xóa thành công nhóm');
 

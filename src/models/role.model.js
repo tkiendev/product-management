@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
 
-const permissionGroupSchema = new mongoose.Schema({
+const rolesSchema = new mongoose.Schema({
     title: String,
     description: String,
+    permission: {
+        type: Array,
+        default: []
+    },
     status: String,
     deleted: {
         type: Boolean,
@@ -10,5 +14,5 @@ const permissionGroupSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-const permissionGroupModel = mongoose.model('permission-groups', permissionGroupSchema);
-module.exports = permissionGroupModel;
+const roleModel = mongoose.model('roles', rolesSchema);
+module.exports = roleModel;
