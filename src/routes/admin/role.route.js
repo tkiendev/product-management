@@ -5,6 +5,9 @@ const roleController = require('../../controllers/admin/role.controller.js');
 
 route.get('/', roleController.index);
 
+route.patch('/action-permissions', roleController.actionPermissions);
+route.get('/permissions', roleController.permissions);
+
 route.get('/create', roleController.create);
 route.post('/create', roleController.actionCreate);
 

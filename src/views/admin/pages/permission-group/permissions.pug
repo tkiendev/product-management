@@ -1,0 +1,51 @@
+extends ../../layouts/default.pug
+include ../../mixins/notification.pug
+
+block main
+    + notification(messages, 3000)
+    div(data=permissions class='d-none')
+    .card
+        .card-header 
+            h1 Phân Quyền
+
+    div(class ='text-right mt-5')
+        button(type="submit" class='btn btn-primary mb-3' btn-submit) Cập nhật
+
+    form(action=`${prefixAdmin}/permissions-group/action-permissions?_method=PATCH` method="POST" form-action-permissions class='d-none')
+        input(type="text" name='list-permissions' input-action-permissions) 
+
+    table(class='table table-hover table-sm' table-permissions)
+        thead 
+            tr
+                th Tính năng
+                each item in permissions
+                    th(class='text-center') #{item.title} 
+            tbody
+                tr(id='id')
+                    td(colspan='4')
+                        b Danh mục sản phẩm
+                    each item in permissions
+                        td(id=item.id class='text-center' class='d-none')
+                            input(type="text" value=item.id) 
+                tr(data-name='product-category_view')
+                    td Xem
+                    each item in permissions
+                        td(class='text-center')
+                            input(type='checkbox')
+                tr(data-name='product-category_create')
+                    td Thêm
+                    each item in permissions
+                        td(class='text-center')
+                            input(type='checkbox')
+                tr(data-name='product-category_edit')
+                    td Sửa
+                    each item in permissions
+                        td(class='text-center')
+                            input(type='checkbox')
+                tr(data-name='product-category_delete')
+                    td Xóa
+                    each item in permissions
+                        td(class='text-center')
+                            input(type='checkbox')
+    
+    script(src='/admin/js/permissions-group/event-permissions.js') 

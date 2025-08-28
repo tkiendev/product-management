@@ -1,5 +1,7 @@
 const roleModel = require('../../models/role.model.js')
 
+const system = require('../../config/systems.js');
+
 // [GET] /admin/permission-group
 module.exports.index = async (req, res) => {
     const permissionsGroup = await roleModel.find({ deleted: false });
@@ -24,7 +26,7 @@ module.exports.actionCreate = async (req, res) => {
             await permissionGroup.save();
 
             req.flash('success', 'Tạo mới thành công');
-            const previousUrl = '/admin/permissions-group';
+            const previousUrl = `${system.prefixAdmin}/permissions-group`;
             res.redirect(previousUrl);
         } else {
             req.flash('error', 'Tạo mới thất bại')
@@ -34,7 +36,7 @@ module.exports.actionCreate = async (req, res) => {
     } catch (error) {
         {
             req.flash('error', 'Không thế tải trang')
-            const previousUrl = '/admin/permissions-group';
+            const previousUrl = `${system.prefixAdmin}/permissions-group`;
             res.redirect(previousUrl);
         }
     }
@@ -51,12 +53,12 @@ module.exports.edit = async (req, res) => {
             });
         } else {
             req.flash('error', 'Tải nhóm lên thất bại')
-            const previousUrl = '/admin/permissions-group';
+            const previousUrl = `${system.prefixAdmin}/permissions-group`;
             res.redirect(previousUrl);
         }
     } catch (error) {
         req.flash('error', 'Tải nhóm lên thất bại')
-        const previousUrl = '/admin/permissions-group';
+        const previousUrl = `${system.prefixAdmin}/permissions-group`;
         res.redirect(previousUrl);
     }
 }
@@ -68,7 +70,7 @@ module.exports.actionEdit = async (req, res) => {
             await roleModel.updateOne({ _id: req.params.id }, req.body)
 
             req.flash('success', 'Cập nhật mới thành công');
-            const previousUrl = '/admin/permissions-group';
+            const previousUrl = `${system.prefixAdmin}/permissions-group`;
             res.redirect(previousUrl);
         } else {
             req.flash('error', 'Trường giá trị bị thiếu vui lòng kiểm tra lại');
@@ -95,12 +97,12 @@ module.exports.detail = async (req, res) => {
             });
         } else {
             req.flash('error', 'Tải lên nhóm thất bại')
-            const previousUrl = '/admin/permissions-group';
+            const previousUrl = `${system.prefixAdmin}/permissions-group`;
             res.redirect(previousUrl);
         }
     } catch (error) {
         req.flash('error', 'Tải lên nhóm thất bại')
-        const previousUrl = '/admin/permissions-group';
+        const previousUrl = `${system.prefixAdmin}/permissions-group`;
         res.redirect(previousUrl);
     }
 }
@@ -117,12 +119,45 @@ module.exports.delete = async (req, res) => {
             res.redirect(previousUrl);
         } else {
             req.flash('error', 'xóa nhóm thất bại')
-            const previousUrl = '/admin/permissions-group';
+            const previousUrl = `${system.prefixAdmin}/permissions-group`;
             res.redirect(previousUrl);
         }
     } catch (error) {
         req.flash('error', 'Tải nhóm lên thất bại')
-        const previousUrl = '/admin/permissions-group';
+        const previousUrl = `${system.prefixAdmin}/permissions-group`;
         res.redirect(previousUrl);
+    }
+}
+
+// [GET] /admin/permissions-group/permissions
+module.exports.permissions = async (req, res) => {
+    try {
+        const permissions = await roleModel.find({ deleted: false, status: 'active' });
+        res.render('admin/pages/permission-group/permissions.pug', {
+            titlePage: 'Phân quyền',
+            permissions: permissions
+        });
+    } catch (error) {
+        req.flash('error', 'Tải trang thất bại');
+        res.redirect(`${system.prefixAdmin}/products`);
+    }
+}
+
+// [PATCH] /admin/permissions-group/action-permissions
+module.exports.actionPermissions = async (req, res) => {
+    try {
+        if (req.body) {
+            const listPermissions = req.body['list-permissions'];
+            const arrayPermission = JSON.parse(listPermissions);
+            for (item of arrayPermission) {
+                await roleModel.updateOne({ _id: item.id }, { permissions: item.permissions })
+            }
+        }
+
+        req.flash('success', 'Cập nhật các quyền thành công');
+        res.redirect(`${system.prefixAdmin}/permissions-group/permissions`);
+    } catch (error) {
+        req.flash('error', 'Cập nhật các quyền thất bại');
+        res.redirect(`${system.prefixAdmin}/permissions-group/permissions`);
     }
 }
