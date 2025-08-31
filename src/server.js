@@ -21,7 +21,7 @@ app.use(flash());
 
 // req body
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded()); // parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
 
 // TinyMCE

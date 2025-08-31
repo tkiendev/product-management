@@ -1,0 +1,52 @@
+extends ../../layouts/default.pug
+include ../../mixins/notification.pug
+
+block main  
+    + notification(messages, 5000)
+    .card.mb-3
+        .card-header
+            .row
+                .col-11
+                    .row
+                        h4 Thêm nhóm phân quyền
+                        a(href="" class='btn ml-2 btn-info') @
+                .col-1 
+                    a(href = `${prefixAdmin}/account` class='btn btn-sm btn-outline-danger') x
+        .card-body
+            form(action=`${prefixAdmin}/account/create` method='POST'  enctype="multipart/form-data" id='form-creatr-product')
+                div(class='form-group')
+                    label(for='fullname') Họ và Tên
+                    input(type='text' name='fullname' id='fullname' class='form-control')         
+                div(class='form-group')
+                    label(for='email') Tài Khoản đăng nhập (email)
+                    input(type='email' name='email' id='email' class='form-control')         
+                div(class='form-group')
+                    label(for='password') Mật khẩu
+                    input(type='password' name='password' id='password' class='form-control')  
+                div(class='form-group')
+                    label(for='permissions_id') Tài khoản thuộc quyền
+                    .row
+                        .col-4 
+                            select(calss='form-control' name='permissions_id' id='permissions_id')
+                                option(value="") -- Chọn quyền 
+                                each item in roles
+                                    option(value=item.id) #{item.title}        
+                div(class='form-group')
+                    label(for='desc') Mô tả 
+                    textarea(name='description' id='textarea-tinyMCE' class='form-control' rows='5')
+                div(class='form-group')
+                    label(for='thumbnail') Ảnh
+                    input(type='file' name='thumbnail' id='thumbnail' class='form-control' accept="image/*" value=0) 
+                    div(class='row d-none mt-2' id='view')
+                        .col-6
+                            img(id="preview" src="#" alt="Ảnh xem trước" style="max-width: 300px")
+                        .col-6
+                            button(type="button" class='btn btn-danger' btn-remove) x 
+                div(class='form-group form-check form-check-inline')
+                    input(type='radio' name='status' id='statusActive' class='form-check-input' value='active' checked) 
+                    lable(for='statusActive' class='form-check-lable') Hoạt động
+                div(class='form-group form-check form-check-inline')
+                    input(type='radio' name='status' id='statusInactive' class='form-check-input' value='inactive') 
+                    lable(for='statusInactive' class='form-check-lable') Dừng hoạt động
+                button(type="submit" class='btn btn-primary d-block') Thêm mới 
+    <script src="/admin/js/eventProduct.js"></script>
