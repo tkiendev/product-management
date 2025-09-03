@@ -1,4 +1,5 @@
 extends ../../layouts/default.pug
-
+include ../../mixins/notification.pug
 block main  
+    + notification(messages, 3000)
     h1 trang tong quan

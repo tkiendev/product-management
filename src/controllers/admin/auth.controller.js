@@ -39,3 +39,11 @@ module.exports.actionLogin = async (req, res) => {
     }
 }
 
+// [GET] admin/auth/out
+module.exports.out = (req, res) => {
+    res.clearCookie('token', { path: system.prefixAdmin });
+    req.flash('success', 'Đăng xuất thành công');
+    const previousPage = `${system.prefixAdmin}/auth/login`;
+    res.redirect(previousPage);
+}
+
