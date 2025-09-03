@@ -2,7 +2,6 @@ const streamifier = require('streamifier');
 const cloudinary = require('../config/cloudinary.js');
 
 module.exports.upload = (req, res, next) => {
-    console.log(req.file);
     if (req.file) {
         try {
             let streamUpload = (req) => {

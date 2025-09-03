@@ -18,7 +18,7 @@ module.exports.index = async (req, res) => {
             }
             delete item.permissions_id;
         };
-        console.log(acccounts);
+
         res.render('admin/pages/account/index.pug', {
             titlePage: 'Quản lý tài khoản',
             acccounts: acccounts,
@@ -49,7 +49,7 @@ module.exports.actionCreate = async (req, res) => {
         account.password = hash;
 
         await account.save();
-        req.flash('succse', 'Tạo tài khoản thành công');
+        req.flash('success', 'Tạo tài khoản thành công');
         res.redirect(`${system.prefixAdmin}/account`);
     } catch (error) {
         req.flash('error', 'Lỗi không thể tạo tài khoản');
@@ -60,18 +60,37 @@ module.exports.actionCreate = async (req, res) => {
 // [GET] /admin/account/edit/:id
 module.exports.edit = async (req, res) => {
     try {
+        const user = await accountModel.findOne({ _id: req.params.id });
+        const roles = await roleModel.find({});
 
+        res.render('admin/pages/account/edit', {
+            titlePage: user.fullname,
+            user: user,
+            roles: roles
+        });
     } catch (error) {
 
     }
 }
 
-// [PATCH] /admin/account/create
+// [PATCH] /admin/account/edit/:id
 module.exports.actionEdit = async (req, res) => {
     try {
+        if (req.params.id) {
+            await accountModel.updateOne({ _id: req.params.id }, req.body);
+            req.flash('success', 'Lưu thành công');
+            const previousPage = req.get('Referer') || '/';
+            res.redirect(previousPage);
+        } else {
+            req.flash('error', 'Bị lỗi vui lòng thử lại');
+            const previousPage = req.get('Referer') || '/';
+            res.redirect(previousPage);
+        }
 
     } catch (error) {
-
+        req.flash('error', 'Thực hiện không thành công vui lòng thao tác lại');
+        const previousPage = `${system.prefixAdmin}/account/create`;
+        res.redirect(previousPage);
     }
 }
 

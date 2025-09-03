@@ -1,0 +1,50 @@
+extends ../../layouts/default.pug
+include ../../mixins/notification.pug
+
+block main  
+    + notification(messages, 5000)
+    .card.mb-3
+        .card-header
+            .row
+                .col-11
+                    .row
+                        h4 ADMIN: #{user.fullname}
+                        a(href="" class='btn ml-2 btn-info') @
+                .col-1
+                    a(href=`${prefixAdmin}/account` class='btn btn-sm ml-2 btn-outline-danger') x
+        .card-body
+            form(action=`${prefixAdmin}/account/edit/${user.id}?_method=patch` method='POST' enctype="multipart/form-data" id='form-creatr-product')
+                div(class='form-group')
+                    label(for='fullname') Họ Và Tên
+                    input(type='text' name='fullname' id='fullname' class='form-control' value=user.fullname)         
+                div(class='form-group')
+                    label(for='email') email 
+                    input(type='email' name='email' id='email' class='form-control' value=user.email)  
+                div(class='form-group')
+                    label(for='password') Mật khẩu
+                    input(type='password' name='password' id='password' class='form-control' value)  
+                div(class='form-group') 
+                    label(for='password') Nhóm quyền
+                    select(name="permissions_id" class='form-control' ) 
+                        option(value="") -- Chọn nhóm quyền 
+                        each role in roles
+                            option(value=role.id selected=(role.id === user.permissions_id ? true : false)) #{role.title}  
+                div(class='form-group')
+                    label(for='desc') Mô tả
+                    textarea(name='description' id='textarea-tinyMCE' class='form-control' rows='5') #{user.description}
+                div(class='form-group')
+                    label(for='thumbnail') Ảnh
+                    input(type='file' name='thumbnail' id='thumbnail' class='form-control' accept="image/*" value=0) 
+                    div(class='row d-none mt-2' id='view')
+                        .col-6
+                            img(id="preview" src="#" alt="Ảnh xem trước" style="max-width: 300px")
+                        .col-6
+                            button(type="button" class='btn btn-danger' btn-remove) x 
+                div(class='form-group form-check form-check-inline')
+                    input(type='radio' name='status' id='statusActive' class='form-check-input' value='active' checked = (user.status == 'active' ? true : false)) 
+                    lable(for='statusActive' class='form-check-lable') Hoạt động
+                div(class='form-group form-check form-check-inline')
+                    input(type='radio' name='status' id='statusInactive' class='form-check-input' value='inactive' checked = (user.status == 'inactive' ? true : false)) 
+                    lable(for='statusInactive' class='form-check-lable') Dừng hoạt động
+                button(type="submit" class='btn btn-primary d-block') Lưu
+    <script src="/admin/js/eventProduct.js"></script>

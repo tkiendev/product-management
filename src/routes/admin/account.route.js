@@ -12,12 +12,24 @@ const upload = multer({ storage: storage });
 const uploadCloudinary = require('../../middlewares/uploadCloudinary.middleware.js');
 
 // check validation
-const checkValidation = require('../../validation/check-email.validation.js');
+const checkValidation = require('../../validation/check-account.validation.js');
 
 route.get('/', accountController.index);
 
 route.get('/create', accountController.create);
-route.post('/create', upload.single('thumbnail'), checkValidation.checkEmail, uploadCloudinary.upload, accountController.actionCreate);
+route.post('/create',
+    upload.single('thumbnail'),
+    checkValidation.checkEmail,
+    uploadCloudinary.upload,
+    accountController.actionCreate);
+
+route.get('/edit/:id', accountController.edit);
+route.patch('/edit/:id',
+    upload.single('thumbnail'),
+    checkValidation.checkPageEditEmail,
+    checkValidation.checkPageEditPassword,
+    uploadCloudinary.upload,
+    accountController.actionEdit);
 
 route.get('/detail/:id', accountController.detail);
 
