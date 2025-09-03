@@ -1,4 +1,7 @@
+const bcrypt = require("bcryptjs");
+
 const accountModel = require('../models/account.model');
+
 const system = require('../config/systems');
 
 module.exports.checkEmail = async (req, res, next) => {
@@ -59,12 +62,14 @@ module.exports.checkPageEditEmail = async (req, res, next) => {
     }
 }
 
-module.exports.checkPageEditPassword = (req, res, next) => {
+module.exports.checkPageEditPassword = async (req, res, next) => {
     if (typeof req.body.password === typeof 'string' && req.body.password == '') {
         delete req.body.password;
         next();
         return;
     } else {
+        const salt = await bcrypt.genSalt(10);
+        req.body.password = await bcrypt.hash(req.body.password, salt);
         next();
         return;
     }

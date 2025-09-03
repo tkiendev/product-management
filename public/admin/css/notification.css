@@ -1,0 +1,43 @@
+/* succse  */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: -350px;
+    min-width: 300px;
+    padding: 15px 20px;
+    border-radius: 6px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateX(0);
+    transition: right 0.5s ease, opacity 0.5s ease;
+}
+
+.notification.show {
+    right: 20px;
+    opacity: 1;
+}
+
+.notification.hide {
+    right: -350px;
+    opacity: 0;
+}
+
+.notification-success {
+    background-color: #28a745;
+}
+
+.notification-error {
+    background-color: #dc3545;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    float: right;
+    cursor: pointer;
+}

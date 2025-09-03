@@ -1,0 +1,22 @@
+extends ../../layouts/auth.default.pug 
+include ../../mixins/notification.pug
+
+block main
+    + notification(messages, 3000)
+    .container
+      h1 Đăng nhập hệ thống
+
+      form(action="/admin/auth/login" method="POST")
+        .form-group
+          label(for="email") Email:
+          input#email(type="email" name="email" required placeholder="Nhập email")
+
+        .form-group
+          label(for="password") Mật khẩu:
+          input#password(type="password" name="password" required placeholder="Nhập mật khẩu")
+
+        button(type="submit") Đăng nhập
+
+      p
+        | Chưa có tài khoản?
+        a(href="/register") liên hệ admin để được cấp tài khoản
