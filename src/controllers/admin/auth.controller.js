@@ -6,7 +6,13 @@ const system = require('../../config/systems.js')
 
 // [GET] admin/auth/login
 module.exports.login = (req, res) => {
-    res.render('admin/pages/auth/login');
+    if (req.cookies.token) {
+        const previousPage = `${system.prefixAdmin}/dashboard`;
+        res.redirect(previousPage);
+        return;
+    } else {
+        res.render('admin/pages/auth/login');
+    }
 }
 
 // [POTH] admin/auth/login

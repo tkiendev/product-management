@@ -1,14 +1,17 @@
-header.header 
-    .container-fluid 
-        .row.align-items-center 
-            .col-3  
-                .inner-logo     
-                    a(href=`${prefixAdmin}/dashboard`) ADMIN 
-            .col-9
-                .row 
-                    .col-10
-                    .col-2
-                        .logout
-                            a(href=`${prefixAdmin}/auth/logout` class='btn btn-outline-danger') Đăng xuất 
-
-
+header.header
+    .container-fluid
+        .row.align-items-center
+            .col-md-3
+                .logo
+                    a(href=`${prefixAdmin}/dashboard` class='navbar-brand') #{user.role.title}
+            .col-md-9
+                .d-flex.justify-content-end.align-items-center
+                    .user-box.dropdown
+                        a.dropdown-toggle(href='#', id='userDropdown', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false' class='d-flex align-items-center text-dark text-decoration-none')
+                            img.avatar(src=user.thumbnail alt='Avatar' class='rounded-circle mr-2' width='40' height='40')
+                            span.font-weight-bold #{user.fullname}
+                        .dropdown-menu.dropdown-menu-right(aria-labelledby='userDropdown')
+                            a.dropdown-item(href=`${prefixAdmin}/profile`) Hồ sơ
+                            a.dropdown-item(href=`${prefixAdmin}/settings`) Cài đặt
+                            .dropdown-divider
+                            a.dropdown-item(href=`${prefixAdmin}/auth/logout`) Đăng xuất
