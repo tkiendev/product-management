@@ -22,7 +22,8 @@ module.exports = async (req, res, next) => {
                 deleted: false
             }).select('-description -status -deleted -createdAt -updatedAt');
             if (role) {
-                res.locals.user.role = role
+                res.locals.user.role = role.permissions;
+                res.locals.user.titleRole = role.title;
             }
             next();
         } else {

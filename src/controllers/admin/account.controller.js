@@ -60,12 +60,12 @@ module.exports.actionCreate = async (req, res) => {
 // [GET] /admin/account/edit/:id
 module.exports.edit = async (req, res) => {
     try {
-        const user = await accountModel.findOne({ _id: req.params.id });
+        const accountUser = await accountModel.findOne({ _id: req.params.id });
         const roles = await roleModel.find({});
 
         res.render('admin/pages/account/edit', {
-            titlePage: user.fullname,
-            user: user,
+            titlePage: accountUser.fullname,
+            accountUser: accountUser,
             roles: roles
         });
     } catch (error) {

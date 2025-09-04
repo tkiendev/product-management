@@ -2,56 +2,65 @@ extends ../../layouts/default.pug
 include ../../mixins/notification.pug
 
 block main    
-    + notification(messages, 5000)
-    .card.mb-3
-        .card-header
-            .row
-                .col-8 
-                    .row 
-                        h4 Nhóm phân quyền 
-                        a(href="" class='btn btn-sm ml-2 btn-outline-danger') @
-                .col-4
-                    a(href=`${prefixAdmin}/permissions-group/create` class='btn btn-sm ml-1 btn-outline-success') + Thêm nhóm mới
-                    a(href="" class='btn btn-sm ml-2 btn-outline-danger') Thùng rác 
-        .card-body
-            .row
-                .col-6
-                    span chưa cập nhật
-                .col-6 
-                    .row
-                        .col-10
-                           span chưa cập nhật
+    - if(user.role.includes('permissions-group_view'))
+        + notification(messages, 5000)
+        .card.mb-3
+            .card-header
+                .row
+                    .col-8 
+                        .row 
+                            h4 Nhóm phân quyền 
+                            a(href="" class='btn btn-sm ml-2 btn-outline-danger') @
+                    .col-4
+                        - if(user.role.includes('permissions-group_create'))
+                            a(href=`${prefixAdmin}/permissions-group/create` class='btn btn-sm ml-1 btn-outline-success') + Thêm nhóm mới
+                        a(href="" class='btn btn-sm ml-2 btn-outline-danger') Thùng rác 
+            .card-body
+                .row
+                    .col-6
+                        span chưa cập nhật
+                    .col-6 
+                        .row
+                            .col-10
+                            span chưa cập nhật
 
-            table(class='table table-hover table-sm' table-check)
-                thead
-                    tr
-                        th 
-                            input(type='checkbox' name='checkAll')
-                        th STT
-                        th Tên
-                        th Trạng thái 
-                        th Hoạt động
-                    tbody
-                        each item, index  in permissionsGroup
-                            - if(item)
-                                tr
-                                    td
-                                        input(type='checkbox' name='id' check-box value=item.id)
-                                    td #{index + 1}
-                                    td #{item.title}
-                                    td 
-                                        if (item.status === 'active')
-                                            a(href="" class = `badge badge-success` data-status=item.status id=item.id) Hoạt Động
-                                        else 
-                                            a(href="" class = `badge badge-danger`  data-status=item.status id=item.id) Dừng hoạt Động
-                                    td 
-                                        a(href =`${prefixAdmin}/permissions-group/edit/${item.id}` class = `btn btn-warning btn-sm`) Sửa
-                                        button(class = `btn btn-danger btn-sm ml-1` btn-delete id=item.id) Xóa
-                                        a(href =`${prefixAdmin}/permissions-group/detail/${item.id}` class = `btn btn-secondary btn-sm ml-1`) Chi tiết 
-                            - else 
-                                span Không có sản phẩm nào
+                table(class='table table-hover table-sm' table-check)
+                    thead
+                        tr
+                            th 
+                                input(type='checkbox' name='checkAll')
+                            th STT
+                            th Tên
+                            th Trạng thái 
+                            th Hoạt động
+                        tbody
+                            each item, index  in permissionsGroup
+                                - if(item)
+                                    tr
+                                        td
+                                            input(type='checkbox' name='id' check-box value=item.id)
+                                        td #{index + 1}
+                                        td #{item.title}
+                                        td 
+                                            if (item.status === 'active')
+                                                a(href="" class = `badge badge-success` data-status=item.status id=item.id) Hoạt Động
+                                            else 
+                                                a(href="" class = `badge badge-danger`  data-status=item.status id=item.id) Dừng hoạt Động
+                                        td 
+                                            - if(user.role.includes('permissions-group_edit'))
+                                                a(href =`${prefixAdmin}/permissions-group/edit/${item.id}` class = `btn btn-warning btn-sm`) Sửa
+                                            - if(user.role.includes('permissions-group_delete'))
+                                                button(class = `btn btn-danger btn-sm ml-1` btn-delete id=item.id) Xóa
+                                            a(href =`${prefixAdmin}/permissions-group/detail/${item.id}` class = `btn btn-secondary btn-sm ml-1`) Chi tiết 
+                                - else 
+                                    span Không có sản phẩm nào
+        
+        form(action="" method="POST" change-status path=`${prefixAdmin}/permissions-group/change-status`)
+        form(action="" method="POST" change-delete path=`${prefixAdmin}/permissions-group/change-delete`) 
+
+        <script src="/admin/js/permissions-group/event-groups.js"></script>
     
-    form(action="" method="POST" change-status path=`${prefixAdmin}/permissions-group/change-status`)
-    form(action="" method="POST" change-delete path=`${prefixAdmin}/permissions-group/change-delete`) 
-
-    <script src="/admin/js/permissions-group/event-groups.js"></script>
+    -else
+        h1 Bạn không thế xem được trang này
+        - var messages = {error: 'Không thể truy cập'}
+        + notification(messages, 5000)

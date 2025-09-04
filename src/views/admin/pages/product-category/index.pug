@@ -3,27 +3,33 @@ include ../../mixins/notification.pug
 include ../../mixins/list-category.pug
 
 block main
-    + notification(messages, 5000)
-    .card
-        .card-header
-            .row 
-                .col-8
-                    h4 Danh Mục sản phẩm
-                .col-4  
-                    a(href=`${prefixAdmin}/product-category/create` class='btn btn-outline-success') + Thêm mới danh mục 
-        .card-body
-            table(class='table table-hover table-sm' table-check)
-                thead
-                    tr
-                        th 
-                            input(type='checkbox' name='checkAll')
-                        th STT
-                        th Hình ảnh
-                        th Tên sản Phẩm 
-                        th Vị trí
-                        th Trạng thái
-                        th Hoạt động
-                    tbody   
-                        - var index = { count: 0 }
-                        + list-category(productCategory, 1, index)
-                        
+    - if(user.role.includes('product-category_view'))
+        + notification(messages, 5000)
+        .card
+            .card-header
+                .row 
+                    .col-8
+                        h4 Danh Mục sản phẩm
+                    .col-4  
+                        - if(user.role.includes('product-category_create'))
+                             a(href=`${prefixAdmin}/product-category/create` class='btn btn-outline-success') + Thêm mới danh mục 
+            .card-body
+                table(class='table table-hover table-sm' table-check)
+                    thead
+                        tr
+                            th 
+                                input(type='checkbox' name='checkAll')
+                            th STT
+                            th Hình ảnh
+                            th Tên sản Phẩm 
+                            th Vị trí
+                            th Trạng thái
+                            th Hoạt động
+                        tbody   
+                            - var index = { count: 0 }
+                            + list-category(productCategory, 1, index)
+    - else 
+        h1 Bạn không thế xem được trang này
+        - var messages = {error: 'Không thể truy cập'}
+        + notification(messages, 5000)
+                            

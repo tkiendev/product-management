@@ -3,13 +3,18 @@
         ul 
             li 
                 a(href=`${prefixAdmin}/dashboard`) Tổng quan
-            li 
-                a(href=`${prefixAdmin}/products`) Quản lý sản phẩm 
-            li 
-                a(href=`${prefixAdmin}/product-category`) Quản lý danh mục
-            li 
-                a(href=`${prefixAdmin}/permissions-group`) Nhóm phân quyền 
-            li 
-                a(href=`${prefixAdmin}/permissions-group/permissions`) |___ Phân quyền 
-            li 
-                a(href=`${prefixAdmin}/account`) Quản lý tài khoản
+            - if(user.role.includes('product_view') || user.role.includes('product_create') || user.role.includes('product_edit') || user.role.includes('product_delete'))
+                li 
+                    a(href=`${prefixAdmin}/products`) Quản lý sản phẩm 
+            - if(user.role.includes('product-category_view') || user.role.includes('product-category_create') || user.role.includes('product-category_edit') || user.role.includes('product-category_delete'))
+                li 
+                    a(href=`${prefixAdmin}/product-category`) Quản lý danh mục
+            - if(user.role.includes('permissions-group_view') || user.role.includes('permissions-group_create') || user.role.includes('permissions-group_edit') || user.role.includes('permissions-group_delete'))
+                li 
+                    a(href=`${prefixAdmin}/permissions-group`) Nhóm phân quyền 
+            - if(user.role.includes('permissions_view') || user.role.includes('permissions_edit'))
+                li 
+                    a(href=`${prefixAdmin}/permissions-group/permissions`) |___ Phân quyền 
+            - if(user.role.includes('account_view') || user.role.includes('account_create') || user.role.includes('account_edit') || user.role.includes('account_delete'))
+                li 
+                    a(href=`${prefixAdmin}/account`) Quản lý tài khoản
