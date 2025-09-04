@@ -18,8 +18,23 @@ const product = new mongoose.Schema({
     deleted: {
         type: Boolean,
         default: false
+    },
+    deletedBy: {
+        id_user: String,
+        deleteAt: Date
+    },
+    updateBy: {
+        type: Array,
+        default: []
+    },
+    createBy: {
+        id_user: String,
+        craeteAt: {
+            type: Date,
+            default: Date
+        }
     }
-}, { timestamps: true });
+});
 
 // Tạo slug tự động trước khi lưu
 product.pre('save', function (next) {

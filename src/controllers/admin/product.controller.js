@@ -1,6 +1,7 @@
 // Model
 const producModel = require('../../models/product.model.js');
 const productCategoryModel = require('../../models/product-category.model.js');
+const accountModel = require('../../models/account.model.js');
 
 // helper
 const formattPriceHelper = require('../../helpers/formattPrice.js');
@@ -196,12 +197,20 @@ module.exports.changeMulti = async (req, res) => {
     }
 };
 
-// [DLETE]: /admin/products/change-dalete
+// [DLETE]: /admin/products/change-dalete/:id
 module.exports.changeDelete = async (req, res) => {
     try {
         const id = req.params.id;
+        let deletedBy = {}
         if (id) {
-            await producModel.updateOne({ _id: id }, { deleted: true });
+            if (res.locals.user) {
+                const user = res.locals.user;
+                deletedBy = {
+                    id_user: user.id,
+                    deleteAt: new Date()
+                }
+            }
+            await producModel.updateOne({ _id: id }, { deleted: true, deletedBy: deletedBy });
         }
 
         req.flash('success', 'Xóa thành công sản phẩm');
@@ -238,7 +247,12 @@ module.exports.actionCreate = async (req, res) => {
             product.discountPercentage = parseInt(product.discountPercentage);
             product.stock = parseInt(product.stock);
 
-            console.log(product);
+            if (res.locals.user) {
+                const user = res.locals.user;
+                product.createBy = {
+                    id_user: user.id
+                }
+            }
             await (new producModel(product)).save();
             req.flash('success', 'Tạo sản phẩm thành công');
 
@@ -296,7 +310,17 @@ module.exports.actionEdit = async (req, res) => {
             product.discountPercentage = parseInt(product.discountPercentage);
             product.stock = parseInt(product.stock);
 
-            await producModel.updateOne({ _id: req.params.id }, product);
+            let updateBy = {}
+            if (res.locals.user) {
+                const user = res.locals.user;
+                updateBy = {
+                    id_user: user.id,
+                    updateAt: new Date()
+                };
+            }
+            await producModel.updateOne({ _id: req.params.id }, product, { $push: { updateBy: updateBy } });
+            await producModel.updateOne({ _id: req.params.id }, { $push: { updateBy: updateBy } });
+
 
             req.flash('success', 'cập nhật sản phẩm thành công');
             const previousUrl = req.get('Referer') || '/';
@@ -315,6 +339,15 @@ module.exports.detail = async (req, res) => {
         if (req) {
             const product = await producModel.findById({ _id: req.params.id });
             let category = '';
+            const userCraete = await accountModel.findById({ _id: product.createBy.id_user });
+            product.userCraete = userCraete.fullname;
+
+            product.updateBy = product.updateBy[product.updateBy.length - 1];
+            console.log(product.updateBy);
+            const userUpdate = await accountModel.findById({ _id: product.updateBy[0].id_user });
+            product.userUpdate = userUpdate.fullname;
+
+
             if (product.category_id) {
                 const productCategory = await productCategoryModel.findById({ _id: product.category_id })
                 category = productCategory.title;
