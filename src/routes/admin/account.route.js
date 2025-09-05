@@ -15,6 +15,7 @@ const uploadCloudinary = require('../../middlewares/uploadCloudinary.middleware.
 const checkValidation = require('../../validation/check-account.validation.js');
 
 route.get('/', accountController.index);
+route.get('/profile', accountController.profile);
 
 route.get('/create', accountController.create);
 route.post('/create',
@@ -29,8 +30,8 @@ route.patch('/edit/:id',
     checkValidation.checkPageEditEmail,
     checkValidation.checkPageEditPassword,
     uploadCloudinary.upload,
-    accountController.actionEdit);
+    accountController.actionEdit
+);
 
-route.get('/detail/:id', accountController.detail);
 
 module.exports = route;

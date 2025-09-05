@@ -1,0 +1,45 @@
+extends ../../layouts/default.pug
+
+block main 
+
+    .card
+      .card-header.bg-primary.text-white.d-flex.justify-content-between.align-items-center
+        h2.mb-0 Hồ sơ Quản trị viên
+        a.btn.btn-light.text-dark(href="/admin/dashboard") Thoát
+      .card-body
+        .row
+          .col-md-4.text-center
+            img(src=user.thumbnail, alt="Avatar", class="img-fluid rounded-circle mb-3")
+            h4 #{user.fullname}
+            p.text-muted #{user.titleRole}
+          .col-md-8
+            h5 Thông tin liên hệ
+            ul.list-unstyled
+              li 📧 Email: #{user.email}
+              li 📞 Điện thoại: 09xx xxx xxx
+              li 📍 Địa chỉ: Quang Trung, Hưng Yên
+            hr
+            h5 Mục tiêu nghề nghiệp
+            p Tôi mong muốn phát triển trong lĩnh vực quản trị hệ thống, đảm bảo vận hành ổn định và bảo mật cho tổ chức.
+
+            h5 Kỹ năng chuyên môn
+            ul
+              li web cơ bản với html css js
+              li biết sử dụng nodejs với expess và engine pugjs
+              li biết sử dụng monggodb và sql
+              li Giao tiếp và làm việc nhóm
+
+            h5 Chứng chỉ
+            ul
+              li null
+              li null
+              li null
+
+            h5 Sở thích
+            ul
+              li Nghiên cứu công nghệ mới
+              li Chơi cờ vua
+              li Đọc sách quản lý
+
+        .mt-4.text-right
+          a.btn.btn-warning(href=`/admin/account/edit/${user.id}`) Chỉnh sửa

@@ -4,6 +4,7 @@ const accountModel = require('../../models/account.model.js');
 const system = require('../../config/systems.js');
 
 const bcrypt = require('bcryptjs');
+const { render } = require('pug');
 
 // [GET] /admin/account
 module.exports.index = async (req, res) => {
@@ -94,10 +95,10 @@ module.exports.actionEdit = async (req, res) => {
     }
 }
 
-// [GET] /admin/account/detail/:id
-module.exports.detail = async (req, res) => {
+// [GET] /admin/account/profile
+module.exports.profile = async (req, res) => {
     try {
-
+        res.render('admin/pages/account/profile.pug');
     } catch (error) {
 
     }
