@@ -1,7 +1,7 @@
 // [GET] /
 module.exports.index = (req, res) => {
 
-    res.render('user/pages/home', {
+    res.render('user/pages/home/index.pug', {
         titlePagae: 'trang chu',
         titleHead: 'trang chu',
 
@@ -16,5 +16,13 @@ module.exports.index = (req, res) => {
             { id: 3, name: 'Máy hút bụi Xiaomi', price: '2.990.000', image: '/images/vacuum.jpg' },
             { id: 4, name: 'Tai nghe Bluetooth', price: '799.000', image: '/images/headphones.jpg' }
         ]
+    });
+};
+
+module.exports.about = (req, res) => {
+
+    res.render('user/pages/home/about.pug', {
+        titlePagae: 'trang chu',
+        titleHead: 'trang chu',
     });
 };
