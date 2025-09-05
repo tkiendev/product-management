@@ -1,12 +1,25 @@
-nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.header-space
-  .container
-    a.navbar-brand(href="#") 
-        <i class="fa-solid fa-shop"> TKienShop </i>
+include ../mixins/list-category.mixin.pug
+
+nav.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top.shadow-sm.w-100
+  .container-fluid
+    a.navbar-brand.font-weight-bold(href="/") ShopKiên
     button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbarNav")
       span.navbar-toggler-icon
-    #navbarNav.collapse.navbar-collapse
-      ul.navbar-nav.ml-auto
-        li.nav-item
+    .collapse.navbar-collapse#navbarNav
+      ul.navbar-nav.mr-auto
+        li.nav-item.active
           a.nav-link(href="/") Trang chủ
+        li.nav-item.dropdown
+          a.nav-link.dropdown-toggle(href="", id="productDropdown", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false") Danh mục
+          .dropdown-menu(aria-labelledby="productDropdown")
+            + listCategiry(catagory)
         li.nav-item
-          a.nav-link(href="/products") Sản phẩm
+          a.nav-link(href="/about") Giới thiệu
+        li.nav-item
+          a.nav-link(href="/contact") Liên hệ
+      ul.navbar-nav
+        li.nav-item
+          a.nav-link(href="/cart") 🛒 Giỏ hàng 
+            span.badge.badge-pill.badge-danger 3
+        li.nav-item
+          a.btn.btn-outline-primary.ml-2(href="/login") Đăng nhập

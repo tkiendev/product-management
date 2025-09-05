@@ -1,4 +1,38 @@
 extends ../../layouts/default.pug
 
-block main 
-  h1 #{titleHead}
+block main
+  .container-fluid.mt-4
+    // Banner giới thiệu
+    .jumbotron.text-center.bg-info.text-white
+      h1 Chào mừng đến với ShopKiên!
+      p.lead Mua sắm dễ dàng – Giao hàng tận nơi – Ưu đãi mỗi ngày
+      a.btn.btn-light.btn-lg.mt-3(href="/products") Khám phá ngay
+
+    // Danh mục nổi bật
+    h2.text-center.mt-5 Danh mục nổi bật
+    .row.mt-3
+      each category in categories
+        .col-md-4.mb-4
+          .card.border-0.shadow-sm
+            img.card-img-top(src=category.image, alt=category.name)
+            .card-body.text-center
+              h5.card-title= category.name
+              a.btn.btn-outline-primary(href=`/products?category=${category.slug}`) Xem sản phẩm
+
+    // Sản phẩm mới
+    h2.text-center.mt-5 Sản phẩm mới
+    .row.mt-3
+      each product in newProducts
+        .col-md-3.mb-4
+          .card.h-100
+            img.card-img-top(src=product.image, alt=product.name)
+            .card-body
+              h5.card-title= product.name
+              p.text-muted Giá: #{product.price}₫
+              a.btn.btn-sm.btn-primary(href=`/products/${product.id}`) Xem chi tiết
+
+    // CTA cuối trang
+    .bg-light.p-5.mt-5.text-center
+      h4 Bạn chưa biết chọn gì?
+      p Khám phá các bài viết tư vấn mua sắm từ ShopKiên
+      a.btn.btn-outline-success(href="/blog") Đọc bài viết

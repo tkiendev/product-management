@@ -1,21 +1,45 @@
 extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
+
 block main 
-  .container
-    +box-head(titleHead)
+  .container-fluid.mt-5.pt-5
+    h2.text-center.mb-4 Danh mục sản phẩm
 
-  .row
-    each product in products
-      a(href=`products/detail/${product.slug != '' ? product.slug : product.id}`) 
-        .product-box
-          img.product-image(src=`${product.thumbnail}`, alt=`${product.title}`)
-          .product-info
-            h3 #{product.title}
-            .prices
-              span.old-price #{product.stringPrice}đ
-              span.sale-price #{product.stringNewPrice}đ
-              span.discount Giảm #{product.discountPercentage}%
-            button(type="button") Mua Ngay
+    ul.nav.nav-tabs.justify-content-center.mb-4
+      li.nav-item
+        a.nav-link.active(href="#electronics", data-toggle="tab") 📱 Điện tử
+      li.nav-item
+        a.nav-link(href="#fashion", data-toggle="tab") 👗 Thời trang
+      li.nav-item
+        a.nav-link(href="#home", data-toggle="tab") 🏠 Gia dụng
 
-    
-  
+    .tab-content
+      #electronics.tab-pane.fade.show.active
+        .row
+          each item in electronics
+            .col-md-3.mb-4
+              .card.h-100.shadow-sm
+                img.card-img-top(src=item.image, alt=item.name)
+                .card-body.text-center
+                  h5.card-title= item.name
+                  a.btn.btn-sm.btn-outline-primary(href=`/products/${item.id}`) Xem
+
+      #fashion.tab-pane.fade
+        .row
+          each item in fashion
+            .col-md-3.mb-4
+              .card.h-100.shadow-sm
+                img.card-img-top(src=item.image, alt=item.name)
+                .card-body.text-center
+                  h5.card-title= item.name
+                  a.btn.btn-sm.btn-outline-primary(href=`/products/${item.id}`) Xem
+
+      #home.tab-pane.fade
+        .row
+          each item in home
+            .col-md-3.mb-4
+              .card.h-100.shadow-sm
+                img.card-img-top(src=item.image, alt=item.name)
+                .card-body.text-center
+                  h5.card-title= item.name
+                  a.btn.btn-sm.btn-outline-primary(href=`/products/${item.id}`) Xem

@@ -1,0 +1,12 @@
+mixin listCategiry(catagory)
+    each item in catagory
+        - if(item.children.length > 0)
+            .dropdown-submenu
+                a.dropdown-item.dropdown-toggle(href=`/products/${item.slug}`) #{item.title}
+                .dropdown-menu
+                    + listCategiry(item.children)
+        - else
+            .dropdown-submenu
+                a.dropdown-item(href=`/products/${item.slug}`) #{item.title}
+            + listCategiry(item.children)
+              
