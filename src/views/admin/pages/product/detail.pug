@@ -52,12 +52,20 @@ block main
                     .col-md-3.label Vị trí hiển thị:
                     .col-md-9 #{product.position}
                 .row.mb-3
-                    if(product.createBy)
+                    - if(product.createBy && product.createBy.craeteAt)
                         .col-md-3.label Tạo vào lúc:
-                        .col-md-9 #{product.createBy.craeteAt} | #{product.userCraete}
+                        .col-md-9 
+                            -if (product.createBy.craeteAt) 
+                                span #{product.createBy.craeteAt} 
+                            -if (product.createBy.userCreate) 
+                                span | #{product.createBy.userCreate}
 
-                    if(product.updateBy.length > 0)
+                    - if(product.updateBy[0] && product.updateBy[0].updateAt)
                         .col-md-3.label Cập nhật lúc:
-                        .col-md-9 #{product.updateBy[0].updateAt} | #{product.userUpdate}
+                        .col-md-9 
+                            -if (product.updateBy[0].updateAt) 
+                                span #{product.updateBy[0].updateAt}
+                            -if (product.updateBy[0].userUpdate) 
+                                span  | #{product.updateBy[0].userUpdate}
                 .edit-product
                     a(href =`${prefixAdmin}/products/edit/${product.id}` class = `btn btn-warning btn-sm`) Sửa

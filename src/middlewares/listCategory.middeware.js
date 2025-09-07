@@ -5,11 +5,10 @@ module.exports = async (req, res, next) => {
         let catagory = await categoryModel.find({ deleted: false, status: 'active' });
 
         const newCatagory = catagory.map(item => { return item._doc });
-        console.log(newCatagory);
         res.locals.catagory = await buildRobustTree(newCatagory);
 
         next();
     } catch (error) {
-        next();
+        // next();
     }
 }

@@ -1,89 +1,122 @@
 const productModel = require('../../models/product.model');
+const categoryModel = require('../../models/product-category.model');
+
 const formattPrice = require('../../helpers/formattPrice');
 
 // [GET] /products
 module.exports.index = async (req, res) => {
 
     try {
-        const electronics = [
-            {
-                id: 1,
-                name: 'iPhone 15 Pro Max',
-                image: '/images/products/iphone15.jpg'
-            },
-            {
-                id: 2,
-                name: 'Laptop Dell XPS 13',
-                image: '/images/products/dellxps13.jpg'
-            },
-            {
-                id: 3,
-                name: 'Tai nghe Sony WH-1000XM5',
-                image: '/images/products/sonywh1000xm5.jpg'
-            },
-            {
-                id: 4,
-                name: 'Smartwatch Samsung Galaxy Watch 6',
-                image: '/images/products/galaxywatch6.jpg'
-            }
-        ];
+        const listProduct = await productModel.find({});
+        let newListProduct = listProduct.map((product) => {
+            product.formattPrice = formattPrice(product.price);
+            product.newPrice = formattPrice((product.price - (product.price * product.discountPercentage / 100)));
+            return product;
+        });
+        newListProduct =
+            res.render('user/pages/product/index', {
+                titlePagae: 'Trang Sản Phẩm',
+                titleHead: 'Danh sách sản phẩm',
+                electronics: listProduct,
+                fashion: listProduct,
+                home: listProduct
+            });
+    }
+    catch (error) {
+        res.redirect(`/`);
+    }
+};
 
-        const fashion = [
-            {
-                id: 5,
-                name: 'Áo thun nam cotton',
-                image: '/images/products/aothun.jpg'
-            },
-            {
-                id: 6,
-                name: 'Đầm nữ dáng dài',
-                image: '/images/products/damnu.jpg'
-            },
-            {
-                id: 7,
-                name: 'Giày sneaker trắng',
-                image: '/images/products/sneaker.jpg'
-            },
-            {
-                id: 8,
-                name: 'Túi xách thời trang nữ',
-                image: '/images/products/tuixach.jpg'
-            }
-        ];
-        const home = [
-            {
-                id: 9,
-                name: 'Máy hút bụi Xiaomi',
-                image: '/images/products/hutbui.jpg'
-            },
-            {
-                id: 10,
-                name: 'Nồi chiên không dầu Lock&Lock',
-                image: '/images/products/noichien.jpg'
-            },
-            {
-                id: 11,
-                name: 'Quạt điều hòa Kangaroo',
-                image: '/images/products/quat.jpg'
-            },
-            {
-                id: 12,
-                name: 'Bộ chăn ga gối cotton',
-                image: '/images/products/changa.jpg'
-            }
-        ];
+// [GET] /products/:slug
+module.exports.index = async (req, res) => {
+    async function childCategory(category) {
+        const arrayChild = [];
 
+        // Tìm tất cả danh mục con của danh mục hiện tại
+        const children = await categoryModel.find({ parent_id: category.id });
+
+        for (const child of children) {
+            arrayChild.push(child);
+
+            // Đệ quy để lấy danh mục con của danh mục con
+            const subChildren = await childCategory(child);
+            arrayChild.push(...subChildren);
+        }
+
+        return arrayChild;
+    }
+    try {
+
+        // lấy ra sản phẩm chung
+        const Category = await categoryModel.findOne({ slug: req.params.slug });
+        let products = await productModel.find({ category_id: Category.id });
+
+        const arrayChildCategory = await childCategory(Category);
+        if (arrayChildCategory.length > 0) {
+            for (const item of arrayChildCategory) {
+                const array = await productModel.find({ category_id: item.id });
+                if (array.length > 0) {
+                    for (const product of array) {
+                        products.push(product);
+                    }
+                }
+            }
+        }
+
+        let newListProduct = products.map((product) => {
+            product.formattPrice = formattPrice(product.price);
+            product.newPrice = formattPrice((product.price - (product.price * product.discountPercentage / 100)));
+            return product;
+        });
+
+        // lấy ra các sản phẩm con || bug
+        const litsChildCategory_lv1 = await categoryModel.find({ parent_id: Category.id });
+        let listProducts_lv1 = [];
+
+        for (const category of litsChildCategory_lv1) {
+            const arrayChild_lv2 = await childCategory(category);
+            const products_lv1 = await productModel.find({ category_id: category.id });
+
+            let products = [];
+            if (products_lv1.length > 0) {
+                products = [...products_lv1]
+            }
+            if (arrayChild_lv2.length > 0) {
+                for (const item of arrayChild_lv2) {
+                    const array = await productModel.find({ category_id: item.id });
+                    if (array.length > 0) {
+                        for (const product of array) {
+                            products.push(product);
+                        }
+                    }
+                }
+            } else {
+                const listProductChild = await productModel.find({ category_id: category.id });
+                products = [...listProductChild];
+            }
+
+            let newProductChild = products.map((product) => {
+                product.formattPrice = formattPrice(product.price);
+                product.newPrice = formattPrice((product.price - (product.price * product.discountPercentage / 100)));
+                return product;
+            });
+
+            listProducts_lv1.push({
+                title: category.title,
+                slug: category.slug,
+                products: newProductChild
+            });
+        }
 
         res.render('user/pages/product/index', {
             titlePagae: 'Trang Sản Phẩm',
             titleHead: 'Danh sách sản phẩm',
-            electronics: electronics,
-            fashion: fashion,
-            home: home
+            productsMain: newListProduct,
+            listChildCategory: listProducts_lv1
         });
     }
     catch (error) {
-        res.redirect(`/`);
+        // res.redirect(`/`);
     }
 };
 

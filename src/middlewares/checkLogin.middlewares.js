@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
             }
             next();
         } else {
-            res.clearCookie('token', { path: '/admin' });
+            res.clearCookie('token', { path: system.prefixAdmin });
             const previousPage = `${system.prefixAdmin}/auth/login`;
             res.redirect(previousPage);
         }

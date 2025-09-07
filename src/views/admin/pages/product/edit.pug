@@ -12,8 +12,8 @@ block main
                     label(for='title') tên sản phẩm
                     input(type='text' name='title' id='title' class='form-control' value=product.title)
                 div(class='form-group')
-                    label(for='catelory_id') Danh mục
-                    select(name="catelory_id" class='form-control')
+                    label(for='category_id') Danh mục
+                    select(name="category_id" class='form-control')
                         - if(typeof category == 'string')
                             option(value='' selected) #{category}
                         each item in listProductCategory

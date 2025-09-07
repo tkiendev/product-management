@@ -318,7 +318,7 @@ module.exports.actionEdit = async (req, res) => {
                     updateAt: new Date()
                 };
             }
-            await producModel.updateOne({ _id: req.params.id }, product, { $push: { updateBy: updateBy } });
+            await producModel.updateOne({ _id: req.params.id }, product);
             await producModel.updateOne({ _id: req.params.id }, { $push: { updateBy: updateBy } });
 
 
@@ -339,17 +339,26 @@ module.exports.detail = async (req, res) => {
         if (req) {
             const product = await producModel.findById({ _id: req.params.id });
             let category = '';
-            const userCraete = await accountModel.findById({ _id: product.createBy.id_user });
-            product.userCraete = userCraete.fullname;
 
-            product.updateBy = product.updateBy[product.updateBy.length - 1];
-            console.log(product.updateBy);
-            const userUpdate = await accountModel.findById({ _id: product.updateBy[0].id_user });
-            product.userUpdate = userUpdate.fullname;
+            const userCreate = await accountModel.findOne({ _id: product.createBy.id_user }).select('fullname');
+            if (userCreate) {
+                product.createBy.userCreate = userCreate.fullname;
+            }
 
+            if (product.updateBy.length > 0) {
+                product.updateBy = product.updateBy[product.updateBy.length - 1];
+                const userUpdate = await accountModel.findOne({ _id: product.updateBy[0].id_user }).select('fullname');
+                if (userUpdate) {
+                    product.updateBy[0].userUpdate = userUpdate.fullname
+
+                }
+            } else {
+                product.updateBy = null
+            }
+            console.log(product.updateBy[0])
 
             if (product.category_id) {
-                const productCategory = await productCategoryModel.findById({ _id: product.category_id })
+                const productCategory = await productCategoryModel.findOne({ _id: product.category_id });
                 category = productCategory.title;
             } else {
                 category = 'Chưa có danh mục'
