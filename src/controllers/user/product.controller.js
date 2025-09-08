@@ -123,7 +123,6 @@ module.exports.index = async (req, res) => {
 // [GET] /products/detail/:slug
 module.exports.detail = async (req, res) => {
     try {
-        console.log(req.params.slug)
         if (req.params.slug) {
             const product = await productModel.findOne({ slug: req.params.slug });
             product.stringNewPrice = formattPrice(product.price - (product.price * product.discountPercentage / 100));

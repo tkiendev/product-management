@@ -20,8 +20,23 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top.shadow-sm.w-100
         li.nav-item
           a.nav-link(href="/contact") Liên hệ
       ul.navbar-nav
-        li.nav-item
-          a.nav-link(href="/cart") 🛒 Giỏ hàng 
+        li.nav-item.dropdown
+          a.nav-link.dropdown-toggle(href="#", id="cartDropdown", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+            | 🛒 Giỏ hàng 
             span.badge.badge-pill.badge-danger 3
+          .dropdown-menu.dropdown-menu-right(aria-labelledby="cartDropdown")
+            //- if cartItems.length === 0
+              .dropdown-item.text-muted Giỏ hàng trống
+            //- else
+              each item in cartItems
+                .dropdown-item.d-flex.align-items-center
+                  img(src=item.image, alt=item.name, width="40", height="40", class="mr-2 rounded")
+                  .flex-grow-1
+                    strong= item.name
+                    br
+                    small Số lượng: #{item.quantity}
+                  a.btn.btn-sm.btn-outline-info.ml-2(href=`/cart/${item._id}`) Xem
+              .dropdown-divider
+              a.dropdown-item.text-center.font-weight-bold(href="/cart") 👉 Xem toàn bộ giỏ hàng
         li.nav-item
           a.btn.btn-outline-primary.ml-2(href="/login") Đăng nhập

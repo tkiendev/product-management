@@ -17,11 +17,13 @@ block main
           span.badge.badge-warning #{product.discountPercentage}%
         p Còn lại:  
           span.badge #{product.stock}
-        form(action="/cart", method="get") 
-          form.mt-3
+        form(action=`/cart/add/${cart.id}` method="POST" class='mt-3') 
             .form-group
-              label(for="quantity") Bạn muốn mua:
-              input#quantity.form-control(type="number", min="1", value="1", max=product.stock)
+              label(for="quantity") Bạn muốn mua: 
+              input(type="number" id = 'quantity' name='quantity' min="1" value="1"  max=product.stock)
+            .form-group.d-none
+              label(for="product_id")
+              input(type="text" id = 'product_id' name='product_id' value=product.id)
             button.btn.btn-success(type="submit") 🛒 Thêm vào giỏ hàng
 
     hr.mt-5
