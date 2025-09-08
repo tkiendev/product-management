@@ -26,7 +26,7 @@ block main
                   p.text-success.mb-1 Giá mới: 
                     strong= item.newPrice + '₫'
                   p.text-warning.mb-2 Giảm: #{item.discountPercentage}% 
-                  a.btn.btn-sm.btn-outline-primary(href=`/products/${item.id}`) Xem
+                  a.btn.btn-sm.btn-outline-primary(href=`/products/detail/${item.slug}`) Xem
       each item in listChildCategory
         .tab-pane.fade(id=item.slug)
           .row
@@ -42,7 +42,7 @@ block main
                     p.text-success.mb-1 Giá mới: 
                       strong= product.newPrice + '₫'
                     p.text-warning.mb-2 Giảm: #{product.discountPercentageproduct}% 
-                    a.btn.btn-sm.btn-outline-primary(href=`/products/${product.id}`) Xem
+                    a.btn.btn-sm.btn-outline-primary(href=`/products/detail/${product.slug}`) Xem
 
   //- CSS bổ sung để đồng nhất ảnh
   style.

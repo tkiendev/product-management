@@ -14,3 +14,29 @@
 .dropdown-submenu:hover>.dropdown-menu {
     display: block;
 }
+
+/* chi tiết sản phẩm */
+
+.text-primary {
+    color: #007bff;
+}
+
+.badge-warning {
+    font-size: 1rem;
+    padding: 0.5em;
+}
+
+.custom-toggle-btn {
+    text-decoration: none !important;
+    /* Loại bỏ gạch chân */
+    color: #6c757d;
+    /* Màu xám mặc định (Bootstrap text-secondary) */
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.custom-toggle-btn:hover {
+    color: #343a40;
+    /* Màu xám đậm hơn khi hover */
+    font-weight: 600;
+}

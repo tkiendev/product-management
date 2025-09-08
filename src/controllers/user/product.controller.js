@@ -120,9 +120,10 @@ module.exports.index = async (req, res) => {
     }
 };
 
-// [GET] /products/detail
+// [GET] /products/detail/:slug
 module.exports.detail = async (req, res) => {
     try {
+        console.log(req.params.slug)
         if (req.params.slug) {
             const product = await productModel.findOne({ slug: req.params.slug });
             product.stringNewPrice = formattPrice(product.price - (product.price * product.discountPercentage / 100));
@@ -130,7 +131,6 @@ module.exports.detail = async (req, res) => {
 
             res.render('user/pages/product/detail', {
                 titlePagae: product.title,
-                titleHead: product.title,
                 product: product
             });
         }
