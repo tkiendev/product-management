@@ -1,6 +1,8 @@
-const mongoose = require('mongoose');
-
 const cartModel = require('../models/cart.model.js');
+const productModel = require('../models/product.model.js');
+
+const formattPrice = require('../helpers/formattPrice.js');
+
 
 function dataSetCart(timeSet = 0) {
     const day = 1000 * 60 * 60 * 24 * timeSet;
@@ -32,7 +34,34 @@ module.exports = async (req, res, next) => {
     }
 
     if (cart) {
-        res.locals.cart = cart
+        const cartHeader = {
+            id: cart.id,
+            products: []
+        };
+
+        const cartProduct = [...cart.product];
+        const totalProduct = cartProduct.reduce((total, item) => {
+            return total + parseInt(item.quantity);
+        }, 0);
+        cartHeader.totalProduct = totalProduct;
+
+        let totalAmount = 0;
+        for (item of cartProduct) {
+            const product = await productModel.findOne({ _id: item.productId }).select('title price discountPercentage thumbnail slug');
+            if (product) {
+                totalAmount += (product.price - (product.price * product.discountPercentage / 100)) * item.quantity;
+                cartHeader.products.push({
+                    total: formattPrice(totalAmount),
+                    quantity: item.quantity
+                    , ...product._doc
+                });
+            }
+        }
+
+        cartHeader.totalAmount = formattPrice(totalAmount);
+
+        res.locals.cart = cartHeader;
+
         next();
     }
 }

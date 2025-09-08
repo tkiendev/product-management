@@ -19,24 +19,40 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top.shadow-sm.w-100
           a.nav-link(href="/about") Giới thiệu
         li.nav-item
           a.nav-link(href="/contact") Liên hệ
+
+      //- giỏ hàng
       ul.navbar-nav
         li.nav-item.dropdown
           a.nav-link.dropdown-toggle(href="#", id="cartDropdown", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
-            | 🛒 Giỏ hàng 
-            span.badge.badge-pill.badge-danger 3
-          .dropdown-menu.dropdown-menu-right(aria-labelledby="cartDropdown")
-            //- if cartItems.length === 0
-              .dropdown-item.text-muted Giỏ hàng trống
-            //- else
-              each item in cartItems
-                .dropdown-item.d-flex.align-items-center
-                  img(src=item.image, alt=item.name, width="40", height="40", class="mr-2 rounded")
-                  .flex-grow-1
-                    strong= item.name
-                    br
-                    small Số lượng: #{item.quantity}
-                  a.btn.btn-sm.btn-outline-info.ml-2(href=`/cart/${item._id}`) Xem
-              .dropdown-divider
-              a.dropdown-item.text-center.font-weight-bold(href="/cart") 👉 Xem toàn bộ giỏ hàng
+            | 🛒 
+            span.badge.badge-pill.badge-danger #{cart.totalProduct}
+          .dropdown-menu.dropdown-menu-right.p-0(aria-labelledby="cartDropdown", style="width: 350px;")
+            //- Vùng scroll cho sản phẩm
+            .cart-scroll-area.p-2(style="max-height: 300px; overflow-y: auto;")
+              if cart.products.length === 0
+                .dropdown-item.text-muted Giỏ hàng trống
+              else
+                each item in cart.products
+                  .dropdown-item.d-flex.align-items-center.border-bottom.pb-2.mb-2
+                    img(src=item.thumbnail, alt=item.title, width="50", height="50", class="mr-2 rounded")
+                    .flex-grow-2
+                      strong #{item.title} 
+                      br
+                      small Số lượng: #{item.quantity}
+                      br
+                      small.text-success Giá: #{item.total} 
+                    a.btn.btn-sm.btn-outline-info.ml-2(href=`/products/detail/${item.slug}`) Xem
+
+            //- Vùng cố định cho tổng tiền và nút
+            .cart-footer.bg-light.border-top.px-3.py-2(style="position: sticky; bottom: 0;")
+              .d-flex.justify-content-between.mb-2
+                span.font-weight-bold Tổng: 
+                span.text-danger #{cart.totalProduct} sản phẩm
+              .d-flex.justify-content-between.mb-2
+                span.font-weight-bold Tổng tiền: 
+                span.text-danger #{cart.totalAmount}đ
+              .d-flex.justify-content-between
+                a.btn.btn-sm.btn-outline-secondary.w-50.mr-1(href="/cart") 🛒 Giỏ hàng
+                a.btn.btn-sm.btn-success.w-50.ml-1(href="/checkout") 💳 Thanh toán
         li.nav-item
           a.btn.btn-outline-primary.ml-2(href="/login") Đăng nhập

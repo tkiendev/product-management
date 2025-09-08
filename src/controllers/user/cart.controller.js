@@ -11,7 +11,6 @@ module.exports.add = async (req, res) => {
                 console.log(item.productId === reqProduct.product_id)
                 return item.productId === reqProduct.product_id;
             });
-            console.log(checkProduct)
             if (checkProduct) {
                 const objProduct = {
                     ProductId: reqProduct.product_id,
