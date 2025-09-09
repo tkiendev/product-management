@@ -1,0 +1,58 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.mt-5
+    h2.text-center.text-primary.mb-4 🧾 Thanh toán đơn hàng
+
+    //- Danh sách sản phẩm
+    .card.mb-4.shadow-sm
+      .card-header.bg-light.font-weight-bold Danh sách sản phẩm
+      .card-body
+        table.table.table-bordered.table-hover
+          thead.thead-light
+            tr.text-center
+              th Hình ảnh
+              th Tên sản phẩm
+              th Số lượng
+              th Giá
+              th Tổng
+          tbody
+            each item in cart.products
+              tr.text-center(name='data')
+                td(value=item.id name='id')
+                  img(src=item.thumbnail, alt=item.title, class="img-thumbnail", style="width: 60px")
+                td.text-left(value=item.title name='title')= item.title
+                td(value=item.quantity name='quantity')= item.quantity
+                td.text-danger(value=item.newPrice name='newPrice')= item.newPrice + '₫'
+                td.text-success(value=item.total name='total')= item.total + '₫'
+        .text-right.mt-3
+          h5 Tổng cộng: 
+            span.text-success.font-weight-bold= cart.totalAmount + '₫'
+
+    //- Thông tin cá nhân
+    .card.shadow-sm
+      .card-header.bg-light.font-weight-bold Thông tin khách hàng
+      .card-body
+        form(action=`/checkout/${cart.id}`, method="POST" name='pay') 
+          .form-row
+            .form-group.col-md-6
+              label(for="fullname") Họ và tên
+              input#fullname.form-control(type="text", name="fullname", required)
+            .form-group.col-md-6
+              label(for="phone") Số điện thoại
+              input#phone.form-control(type="tel", name="phone", required)
+          .form-row
+            .form-group.col-md-12
+              label(for="address") Địa chỉ giao hàng
+              textarea#address.form-control(name="address", rows="3", required)
+          .form-row
+            .form-group.col-md-6
+              label(for="email") Email
+              input#email.form-control(type="email", name="email")
+            .form-group.col-md-6
+              label(for="note") Ghi chú
+              input#note.form-control(type="text", name="note")
+          .text-right.mt-3
+            button.btn.btn-success.btn-lg(type="submit")
+              i.fas.fa-check-circle.mr-2
+              | Xác nhận thanh toán
