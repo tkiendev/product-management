@@ -1,6 +1,8 @@
 const cartModel = require("../../models/cart.model");
 const productModel = require('../../models/product.model');
 
+
+// [POST] cart/add/:id
 module.exports.add = async (req, res) => {
     const cartId = req.params.id;
     const reqProduct = req.body;
@@ -8,7 +10,6 @@ module.exports.add = async (req, res) => {
         if (cartId && reqProduct) {
             const cart = await cartModel.findOne({ _id: cartId });
             const checkProduct = cart.product.find((item) => {
-                console.log(item.productId === reqProduct.product_id)
                 return item.productId === reqProduct.product_id;
             });
             if (checkProduct) {
@@ -32,4 +33,18 @@ module.exports.add = async (req, res) => {
         const previousUrl = req.get('Referer') || '/';
         res.redirect(previousUrl);
     }
+}
+
+// [GET] /cart
+module.exports.index = (req, res) => {
+    res.render('user/pages/cart/index.pug');
+}
+
+// [GET] /cart/:cardId/:id
+module.exports.delete = async (req, res) => {
+
+    await cartModel.updateOne({ _id: req.params.cartId }, { $pull: { product: { productId: req.params.id } } });
+
+    const previousUrl = req.get('Referer') || '/';
+    res.redirect(previousUrl);
 }

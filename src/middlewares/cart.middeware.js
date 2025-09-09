@@ -51,7 +51,9 @@ module.exports = async (req, res, next) => {
             if (product) {
                 totalAmount += (product.price - (product.price * product.discountPercentage / 100)) * item.quantity;
                 cartHeader.products.push({
-                    total: formattPrice(totalAmount),
+                    id: product.id,
+                    newPrice: formattPrice((product.price - (product.price * product.discountPercentage / 100))),
+                    total: formattPrice(((product.price - (product.price * product.discountPercentage / 100)) * item.quantity)),
                     quantity: item.quantity
                     , ...product._doc
                 });

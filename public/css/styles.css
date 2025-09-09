@@ -40,3 +40,25 @@
     /* Màu xám đậm hơn khi hover */
     font-weight: 600;
 }
+
+
+/* cart */
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.img-thumbnail {
+    border-radius: 8px;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.quantity-input {
+    max-width: 60px;
+    padding: 4px 6px;
+    font-size: 0.85rem;
+}
