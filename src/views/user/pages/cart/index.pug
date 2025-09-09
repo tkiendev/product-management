@@ -15,13 +15,15 @@ block main
             th 
         tbody
           each item in cart.products
-            tr.text-center.align-middle
+            tr.text-center.align-middle(product)
               td
                 img(src=item.thumbnail, alt=item.title, class="img-thumbnail", style="width: 80px")
               td.text-left.font-weight-bold= item.title
               td.text-danger.font-weight-bold= item.newPrice + '₫'
               td
-                input.form-control.form-control-sm.quantity-input(type="number", value=item.quantity, min="1")
+                form(action=`/cart/change-quantity/${cart.id}`, method="POST" name=item.id) 
+                    input.form-control.form-control-sm.d-none(type="text" name='id' value=item.id min="1")
+                    input.form-control.form-control-sm.quantity-input(type="number" name='quantity' value=item.quantity min="1")
               td.text-success.font-weight-bold= item.total + '₫'
               td
                 a.btn.btn-info.btn-sm(href=`/products/detail/${item.slug}`)

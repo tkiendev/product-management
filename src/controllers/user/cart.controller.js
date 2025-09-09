@@ -48,3 +48,18 @@ module.exports.delete = async (req, res) => {
     const previousUrl = req.get('Referer') || '/';
     res.redirect(previousUrl);
 }
+
+// [POST] /cart/change-quantity/:cardId
+module.exports.changeQuantity = async (req, res) => {
+
+    if (req.params.cardId) {
+        if (req.params.cardId) {
+            await cartModel.updateOne({ _id: req.params.cardId, 'product.productId': req.body.id },
+                {
+                    $set: { 'product.$.quantity': req.body.quantity }
+                });
+        }
+    }
+    const previousUrl = req.get('Referer') || '/';
+    res.redirect(previousUrl);
+}
