@@ -1,0 +1,46 @@
+extends ../../layouts/default.pug
+
+block main
+  h1.text-center.mb-4 Danh sách đơn hàng 🧾
+
+  if orders.length
+    each order in orders
+      .card.mb-4.shadow-sm
+        .card-header.bg-primary.text-white
+          h5.mb-0 Mã đơn hàng: #{order.id}
+        .card-body
+          .row
+            .col-md-6
+              p Ngày đặt: 
+                strong #{order.createdAt}
+              p Trạng thái: 
+                span.badge.badge-info= order.status
+            .col-md-6.text-right
+              p Tổng tiền: 
+                strong.text-succes= order.totalAmount.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})
+
+          h6.mt-4 Mặt hàng trong đơn:
+          if order.product.length
+            table.table.table-bordered.table-sm.mt-2
+              thead.thead-light
+                tr
+                  th Tên sản phẩm
+                  th Số lượng
+                  th Đơn giá
+                  th Thành tiền
+              tbody
+                each item in order.product
+                  tr
+                    td= item.title
+                    td= item.totalQuantityProduct
+                    td= item.newPrice.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})
+                    td= item.totalAmountProduct.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})
+          else
+            p.text-muted Không có mặt hàng nào trong đơn này.
+  else
+    .alert.alert-warning.text-center Bạn chưa có đơn hàng nào.
+
+  hr
+  .text-right.mt-4
+    h5 Tổng tiền tất cả đơn hàng: 
+      span.text-danger.font-weight-bold= totalAmountOrder.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})

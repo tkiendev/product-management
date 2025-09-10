@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const checkoutSchema = new mongoose.Schema({
+    status: {
+        type: String,
+        default: 'waiting'
+    },
     cartId: String,
     fullname: String,
     phone: Number,
