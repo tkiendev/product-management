@@ -7,6 +7,8 @@ const routerAdmin = require('./routes/admin/index.route');
 const path = require('path');
 const mongodb = require('./config/database');
 
+console.log(__dirname + '..');
+
 // method
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
@@ -40,7 +42,8 @@ const port = process.env.PORT || 3001;
 app.use(express.static(path.join(__dirname, '../', 'public')));
 
 // view engine
-app.set('views', './src/views');
+
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // connection DB

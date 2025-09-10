@@ -49,12 +49,12 @@ module.exports.index = async (req, res) => {
 
         // lấy ra sản phẩm chung
         const Category = await categoryModel.findOne({ slug: req.params.slug });
-        let products = await productModel.find({ category_id: Category.id });
+        let products = await productModel.find({ category_id: Category.id, deleted: false, status: 'active' });
 
         const arrayChildCategory = await childCategory(Category);
         if (arrayChildCategory.length > 0) {
             for (const item of arrayChildCategory) {
-                const array = await productModel.find({ category_id: item.id });
+                const array = await productModel.find({ category_id: item.id, deleted: false, status: 'active' });
                 if (array.length > 0) {
                     for (const product of array) {
                         products.push(product);
