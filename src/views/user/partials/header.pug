@@ -12,7 +12,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top.shadow-sm.w-100
         li.nav-item.dropdown
           a.nav-link.dropdown-toggle(href="", id="productDropdown", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false") Danh mục
           .dropdown-menu(aria-labelledby="productDropdown")
-            + listCategiry(catagory)
+            +listCategiry(catagory)
         li.nav-item
           a.nav-link(href="/products") Trang sản phẩm
         li.nav-item
@@ -29,7 +29,6 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top.shadow-sm.w-100
             | 🛒 
             span.badge.badge-pill.badge-danger #{cart.totalProduct}
           .dropdown-menu.dropdown-menu-right.p-0(aria-labelledby="cartDropdown", style="width: 350px;")
-            //- Vùng scroll cho sản phẩm
             .cart-scroll-area.p-2(style="max-height: 300px; overflow-y: auto;")
               if cart.products.length === 0
                 .dropdown-item.text-muted Giỏ hàng trống
@@ -44,8 +43,6 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top.shadow-sm.w-100
                       br
                       small.text-success Giá: #{item.total} 
                     a.btn.btn-sm.btn-outline-info.ml-2(href=`/products/detail/${item.slug}`) Xem
-
-            //- Vùng cố định cho tổng tiền và nút
             .cart-footer.bg-light.border-top.px-3.py-2(style="position: sticky; bottom: 0;")
               .d-flex.justify-content-between.mb-2
                 span.font-weight-bold Tổng: 
@@ -56,5 +53,15 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top.shadow-sm.w-100
               .d-flex.justify-content-between
                 a.btn.btn-sm.btn-outline-secondary.w-50.mr-1(href="/cart") 🛒 Giỏ hàng
                 a.btn.btn-sm.btn-success.w-50.ml-1(href="/checkout") 💳 Thanh toán
-        li.nav-item
-          a.btn.btn-outline-primary.ml-2(href="/login") Đăng nhập
+
+        //- người dùng
+        li.nav-item.dropdown
+          - if(user)
+            a.nav-link.dropdown-toggle(href="#", id="userDropdown", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+              i.fas.fa-user-circle.mr-2
+              | !{user.fullname}
+            .dropdown-menu.dropdown-menu-right(aria-labelledby="userDropdown")
+              a.dropdown-item(href="/user/profile") Hồ sơ cá nhân
+              a.dropdown-item(href="/user/logout") Đăng xuất
+          - else
+            a.btn.btn-outline-primary.ml-2(href="/user/login") Đăng nhập
