@@ -10,8 +10,8 @@ const checkLoginUserMiddeware = require('../../middlewares/checkLoginUser.middew
 
 module.exports = (app) => {
     app.use(listCategoryMiddeware);
-    app.use(cartMiddeware);
     app.use(checkLoginUserMiddeware);
+    app.use(cartMiddeware);
 
     app.use('/', homeRoutes);
     app.use('/products', productRoutes);

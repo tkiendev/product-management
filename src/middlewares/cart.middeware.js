@@ -13,6 +13,8 @@ function dataSetCart(timeSet = 0) {
 module.exports = async (req, res, next) => {
     let cart = null;
     const cookieCart = req.cookies.cart;
+
+    console.log('=============================')
     if (cookieCart && cookieCart.length === 24) {
 
         cart = await cartModel.findOne({ _id: cookieCart });
